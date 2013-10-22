@@ -47,6 +47,8 @@ namespace SchetsEditor
                                     , new LijnTool()
                                     , new RechthoekTool()
                                     , new VolRechthoekTool()
+                                    , new OvaalTool()
+                                    , new VolOvaalTool()
                                     , new TekstTool()
                                     , new GumTool()
                                     };

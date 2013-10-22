@@ -1,0 +1,10 @@
+Changelog
+
+# SchetsWin.cs #
+* Add new OvaalTool() & new VolOvaalTool() to deTools array.
+
+# Tools.cs #
+* Add classes OvaalTool and VolOvaalTool.
+
+TODO
+Add pictures of the oval tools
