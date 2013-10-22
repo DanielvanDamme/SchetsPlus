@@ -51,6 +51,11 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="Schets.cs" />
     <Compile Include="SchetsControl.cs">
       <SubType>UserControl</SubType>
@@ -61,14 +66,9 @@
     <Compile Include="Tools.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Resources.resx</DependentUpon>
-      <DesignTime>True</DesignTime>
-    </Compile>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -89,13 +89,17 @@
     <None Include="Resources\lijn.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\rect.png" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\fillrect.png" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\rect.png" />
     <None Include="Resources\text.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\rondje.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\cirkel.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

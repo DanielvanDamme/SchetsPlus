@@ -105,9 +105,9 @@ namespace SchetsEditor
         }
     }
 
-    public class OvaalTool : TweepuntTool
+    public class CirkelTool : TweepuntTool
     {
-        public override string ToString() { return "ovaal"; }
+        public override string ToString() { return "cirkel"; }
 
         public override void Bezig(Graphics g, Point p1, Point p2)
         {
@@ -115,9 +115,9 @@ namespace SchetsEditor
         }
     }
 
-    public class VolOvaalTool : OvaalTool
+    public class RondjeTool : CirkelTool
     {
-        public override string ToString() { return "volle ovaal"; }
+        public override string ToString() { return "rondje"; }
 
         public override void Compleet(Graphics g, Point p1, Point p2)
         {

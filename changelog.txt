@@ -1,10 +1,13 @@
 Changelog
 
-# SchetsWin.cs #
-* Add new OvaalTool() & new VolOvaalTool() to deTools array.
+# SchetsWin.cs
+* Add new CirkelTool() & new RondjeTool() to deTools array.
 
-# Tools.cs #
-* Add classes OvaalTool and VolOvaalTool.
+# Tools.cs
+* Add classes CirkelTool and RondjeTool.
 
-TODO
-Add pictures of the oval tools
+# Resources.resx
+* Add cirkel.png as cirkel and rondje.png as rondje to the resources
+
+# Resources folder
+* Add cirkel.png and rondje.png
