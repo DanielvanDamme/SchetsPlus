@@ -1,0 +1,18 @@
+##CHANGELOG
+
+
+  OPDRACHT 1     
+################################################################################################################
+# BESTANDSNAAM   # AANPASSING
+################################################################################################################
+# SchetsWin.cs   # De opdrachten new CirkelTool() & new RondjeTool() toegevoegd aan deTools array.
+# Tools.cs:      # Twee nieuwe klassen CirkelTool and RondjeTool toegevoegd.
+# Resources map  # Cirkel.png and rondje.png toegevoegd.
+# Resources.resx # Twee plaatjes toegevoegd aan de Resources. cirkel.png als cirkel and rondje.png als rondje.
+################################################################################################################
+
+  OPDRACHT 2
+################################################################################################################
+# BESTANDSNAAM   # AANPASSING
+################################################################################################################
+# Hoofscherm.cs  # Nieuwe abbonee op het FormClosing event.
