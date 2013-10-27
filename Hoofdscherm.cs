@@ -22,6 +22,7 @@ namespace SchetsEditor
         {   ToolStripDropDownItem menu;
             menu = new ToolStripMenuItem("File");
             menu.DropDownItems.Add("Nieuw", null, this.nieuw);
+            menu.DropDownItems.Add("Open", null, this.openen);
             menu.DropDownItems.Add("Exit", null, this.afsluiten);
             menuStrip.Items.Add(menu);
         }
@@ -40,12 +41,52 @@ namespace SchetsEditor
         }
 
         private void nieuw(object sender, EventArgs e)
-        {   SchetsWin s = new SchetsWin();
+        {
+            nieuwWrapper();
+        }
+        // 2: new wrapper
+        private void nieuwWrapper(string bestandsLocatie)
+        {
+            SchetsWin s = new SchetsWin(bestandsLocatie);
             s.MdiParent = this;
             s.Show();
+            // Abboneer de functie schetsWindowAfsluiten op de FromClosing eventhandler
+            s.FormClosing += schetsWindowAfsluiten;
         }
+        // 2
+        private void nieuwWrapper()
+        {
+            nieuwWrapper("");
+        }
+
         private void afsluiten(object sender, EventArgs e)
         {   this.Close();
+        }
+
+        // Eventhandler voor het afsluiten van een schets window
+        private void schetsWindowAfsluiten(object sender, FormClosingEventArgs e)
+        {
+            DialogResult zekerAfsluiten = MessageBox.Show("Er zijn onopgeslagen wijzigingen, weet u zeker dat u dit scherm wilt sluiten?", "Schets sluiten", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation);
+            if (zekerAfsluiten == DialogResult.Yes)
+            {
+                ((SchetsWin)sender).FormClosing -= schetsWindowAfsluiten;
+                this.ActiveMdiChild.Close();
+            }
+            else
+                e.Cancel = true;
+        }
+
+        private void openen(object sender, EventArgs e)
+        {
+            OpenFileDialog bestandOpenen = new OpenFileDialog();
+            bestandOpenen.Filter = "JPG file *.jpg|*.jpg|PNG file *.png|*.png|BMP file *.bmp|*.bmp";
+            bestandOpenen.Title = "Afbeelding openen";
+
+            if (bestandOpenen.ShowDialog() == DialogResult.OK)
+            {
+                this.nieuwWrapper(bestandOpenen.FileName);
+            }
+
         }
     }
 }

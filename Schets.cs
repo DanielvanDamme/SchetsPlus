@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
 
 namespace SchetsEditor
 {
@@ -8,14 +9,35 @@ namespace SchetsEditor
     {
         private Bitmap bitmap;
         
-        public Schets()
+        // 2: aangepaste constructor
+        public Schets(string bestandsLocatie)
         {
             bitmap = new Bitmap(1, 1);
+            openBestand(bestandsLocatie);
+        }
+        // 2 constructor overloading
+        public Schets() : this("")
+        {
+        }
+        // 2: Property to get the drawing
+        public Bitmap GetBitmap
+        {
+            get { return bitmap; }
         }
         public Graphics BitmapGraphics
         {
             get { return Graphics.FromImage(bitmap); }
         }
+
+        //2
+        private void openBestand(string bestandsLocatie)
+        {
+            if (bestandsLocatie != "")
+            {
+                bitmap = new Bitmap(bestandsLocatie);
+            }
+        }
+
         public void VeranderAfmeting(Size sz)
         {
             if (sz.Width > bitmap.Size.Width || sz.Height > bitmap.Size.Height)

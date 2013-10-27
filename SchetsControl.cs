@@ -9,17 +9,25 @@ namespace SchetsEditor
     {
         private Schets schets;
         private Color penkleur;
-
+        // Property to get the drawing
+        public Bitmap GetBitmap
+        {
+            get { return schets.GetBitmap; }
+        }
         public Color PenKleur 
         {   get { return penkleur; } 
         }
-        public SchetsControl()
+        // 2: aangepaste constructor
+        public SchetsControl(string bestandsLocatie)
         {   this.BorderStyle = BorderStyle.Fixed3D;
-            this.schets = new Schets();
+            this.schets = new Schets(bestandsLocatie);
             this.Paint += this.teken;
             this.Resize += this.veranderAfmeting;
             this.veranderAfmeting(null, null);
         }
+        // 2: constructor overloaded
+        public SchetsControl() : this("")
+        { }
         protected override void OnPaintBackground(PaintEventArgs e)
         {
         }

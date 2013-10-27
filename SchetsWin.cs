@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Windows.Forms;
 using System.Reflection;
 using System.Resources;
+using System.IO;
 
 namespace SchetsEditor
 {
@@ -18,6 +19,8 @@ namespace SchetsEditor
             = new ResourceManager("SchetsEditor.Properties.Resources"
                                  , Assembly.GetExecutingAssembly()
                                  );
+        // 2: bestandslocatie
+        private string bestandsLocatie = "";
 
         private void veranderAfmeting(object o, EventArgs ea)
         {
@@ -36,12 +39,42 @@ namespace SchetsEditor
             this.huidigeTool = (ISchetsTool)((RadioButton)obj).Tag;
         }
 
+        // 2: Nieuwe methode om het bestand op te slaan
+        private void opslaanHandler(object sender, EventArgs ea)
+        {
+            bool succes = true;
+
+            SaveFileDialog bestandOpslaan = new SaveFileDialog();
+            bestandOpslaan.Filter = "JPG file *.jpg|*.jpg|PNG file *.png|*.png|BMP file *.bmp|*.bmp";
+            bestandOpslaan.Title = "Afbeelding opslaan";
+            if (bestandOpslaan.ShowDialog() == DialogResult.OK)
+            {
+                Bitmap bmp = schetscontrol.GetBitmap;
+                try
+                {
+                    bmp.Save(bestandOpslaan.FileName);
+                }
+                catch (IOException e)
+                {
+                    MessageBox.Show("Fout bij het opslaan: " + e.Message, "Fout", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    succes = false;
+                }
+
+                if (succes)
+                {
+                    bestandsLocatie = bestandOpslaan.FileName;
+                    MessageBox.Show("Tekening succesvol opgeslagen in: " + bestandOpslaan.FileName);
+                }
+            }
+        }
+
         private void afsluiten(object obj, EventArgs ea)
         {
             this.Close();
         }
 
-        public SchetsWin()
+        // 2: aangepaste constructor
+        public SchetsWin(string bestandsLocatie)
         {
             ISchetsTool[] deTools = { new PenTool()         
                                     , new LijnTool()
@@ -59,7 +92,7 @@ namespace SchetsEditor
             this.ClientSize = new Size(700, 500);
             huidigeTool = deTools[0];
 
-            schetscontrol = new SchetsControl();
+            schetscontrol = new SchetsControl(bestandsLocatie);
             schetscontrol.Location = new Point(64, 10);
             schetscontrol.MouseDown += (object o, MouseEventArgs mea) =>
                                        {   vast=true;  
@@ -90,16 +123,23 @@ namespace SchetsEditor
             this.veranderAfmeting(null, null);
         }
 
+        // 2: overloaded constructor
+        public SchetsWin() : this("")
+        {
+        }
+
         private void maakFileMenu()
-        {   
+        {
             ToolStripMenuItem menu = new ToolStripMenuItem("File");
             menu.MergeAction = MergeAction.MatchOnly;
+            // Nieuwe regel
+            menu.DropDownItems.Add("Opslaan", null, this.opslaanHandler);
             menu.DropDownItems.Add("Sluiten", null, this.afsluiten);
             menuStrip.Items.Add(menu);
         }
 
         private void maakToolMenu(ICollection<ISchetsTool> tools)
-        {   
+        {
             ToolStripMenuItem menu = new ToolStripMenuItem("Tool");
             foreach (ISchetsTool tool in tools)
             {   ToolStripItem item = new ToolStripMenuItem();
