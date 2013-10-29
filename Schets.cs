@@ -8,12 +8,13 @@ namespace SchetsEditor
 {
     class Schets
     {
-        // 2: onopgeslagen wijzigingen
+        // 2: Wijzigingsstatus van de bitmap bijhouden
         private bool isBitmapGewijzigd = false;
-        private Bitmap bitmap;
+        // 2: Bij initialisatie van een object Schets isNieuwScherm true meegeven
         private bool isNieuwScherm = true;
+        private Bitmap bitmap;
 
-        // 2: property om de wijzigingsstatus op te vragen of door te geven
+        // 2: Property om de wijzigingsstatus op te vragen of door te geven
         public bool IsBitmapGewijzigd
         {   get { return isBitmapGewijzigd; }
             set { isBitmapGewijzigd = value; }
@@ -26,14 +27,14 @@ namespace SchetsEditor
         {   get { return Graphics.FromImage(bitmap); }
         }
 
-        // 2: aangepaste constructor
+        // 2: Constructor geschikt gemaakt om een bestand te kunnen openen
         public Schets(string bestandsLocatie)
         {
             bitmap = new Bitmap(1, 1);
             openBestand(bestandsLocatie);
         }
 
-        // 2: constructor overloading
+        // 2: Constructor overloading
         public Schets() : this("")
         {
         }
@@ -43,7 +44,6 @@ namespace SchetsEditor
         {
             if (bestandsLocatie != "")
                 bitmap = new Bitmap(bestandsLocatie);
-                
         }
 
         public void VeranderAfmeting(Size sz)
@@ -64,7 +64,7 @@ namespace SchetsEditor
         public void Teken(Graphics gr)
         {
             gr.DrawImage(bitmap, 0, 0);
-            // 2: Deze actie veroorzaakt een wijziging tenzij het een maagdelijk scherm is
+            // 2: Deze actie veroorzaakt een wijziging, tenzij het scherm net geopend is
             if (isNieuwScherm)
             {
                 this.isBitmapGewijzigd = false;

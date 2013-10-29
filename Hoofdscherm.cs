@@ -23,7 +23,7 @@ namespace SchetsEditor
         {   ToolStripDropDownItem menu;
             menu = new ToolStripMenuItem("File");
             menu.DropDownItems.Add("Nieuw", null, this.nieuw);
-            menu.DropDownItems.Add("Open", null, this.openen);
+            menu.DropDownItems.Add("Open", null, this.openBestandDialog);
             menu.DropDownItems.Add("Exit", null, this.afsluiten);
             menuStrip.Items.Add(menu);
         }
@@ -43,15 +43,16 @@ namespace SchetsEditor
 
         private void nieuw(object sender, EventArgs e)
         {
-            nieuwWrapper("");
+            openBestand("");
         }
-        // 2: new wrapper
-        private void nieuwWrapper(string bestandsLocatie)
+
+        // 2: Wrapper om een nieuw SchetsWin te openen
+        private void openBestand(string bestandsLocatie)
         {
             SchetsWin s = new SchetsWin(bestandsLocatie);
             s.MdiParent = this;
             s.Show();
-            // Abboneer de functie schetsWindowAfsluiten op de FromClosing eventhandler
+            // 2: Abboneer de functie schetsWindowAfsluiten op de FromClosing eventhandler
             s.FormClosing += schetsWindowAfsluiten;
             s.IsBitmapGewijzigd = false;
         }
@@ -60,7 +61,7 @@ namespace SchetsEditor
         {   this.Close();
         }
 
-        // Eventhandler voor het afsluiten van een schets window
+        // 2: Eventhandler voor het afsluiten van een schets window
         private void schetsWindowAfsluiten(object sender, FormClosingEventArgs e)
         {
             if (((SchetsWin)sender).IsBitmapGewijzigd)
@@ -76,8 +77,8 @@ namespace SchetsEditor
             }
         }
 
-        // 2: bestand openen methode
-        private void openen(object sender, EventArgs e)
+        // 2: Methode om een bestand te openen via een OpenFileDialog
+        private void openBestandDialog(object sender, EventArgs e)
         {
             OpenFileDialog bestandOpenen = new OpenFileDialog();
             bestandOpenen.Filter = "JPG file *.jpg|*.jpg|PNG file *.png|*.png|BMP file *.bmp|*.bmp";
@@ -86,11 +87,10 @@ namespace SchetsEditor
             if (bestandOpenen.ShowDialog() == DialogResult.OK)
             {
                 try
-                {   this.nieuwWrapper(bestandOpenen.FileName);   }
+                {   this.openBestand(bestandOpenen.FileName);   }
                 catch (Exception ex)
                 {   MessageBox.Show("Fout bij het openen: " + ex.Message, "Fout", MessageBoxButtons.OK, MessageBoxIcon.Error);    }
             }
-
         }
     }
 }

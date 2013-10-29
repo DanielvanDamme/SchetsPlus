@@ -19,7 +19,7 @@ namespace SchetsEditor
             = new ResourceManager("SchetsEditor.Properties.Resources"
                                  , Assembly.GetExecutingAssembly()
                                  );
-        // 2: property om de wijzigingsstatus op te vragen of door te geven
+        // 2: Property om de wijzigingsstatus op te vragen of door te geven
         public bool IsBitmapGewijzigd
         {
             get { return schetscontrol.IsBitmapGewijzigd; }
@@ -43,7 +43,7 @@ namespace SchetsEditor
         }
 
         // 2: Nieuwe methode om het bestand op te slaan
-        private void opslaanHandler(object sender, EventArgs ea)
+        private void bestandOpslaan(object sender, EventArgs ea)
         {
             bool succes = true;
 
@@ -75,7 +75,6 @@ namespace SchetsEditor
             this.Close();
         }
 
-        // 2: aangepaste constructor
         public SchetsWin(string bestandsLocatie)
         {
             ISchetsTool[] deTools = { new PenTool()         
@@ -93,7 +92,7 @@ namespace SchetsEditor
 
             this.ClientSize = new Size(700, 500);
             huidigeTool = deTools[0];
-
+            // 2: Bestandslocatie meegeven aan de constructor 
             schetscontrol = new SchetsControl(bestandsLocatie);
             schetscontrol.Location = new Point(64, 10);
             schetscontrol.MouseDown += (object o, MouseEventArgs mea) =>
@@ -123,8 +122,6 @@ namespace SchetsEditor
             this.maakAktieButtons(deKleuren);
             this.Resize += this.veranderAfmeting;
             this.veranderAfmeting(null, null);
-            
-              
         }
 
         // 2: overloaded constructor
@@ -137,7 +134,7 @@ namespace SchetsEditor
             ToolStripMenuItem menu = new ToolStripMenuItem("File");
             menu.MergeAction = MergeAction.MatchOnly;
             // 2: Menu item voor opslaan
-            menu.DropDownItems.Add("Opslaan", null, this.opslaanHandler);
+            menu.DropDownItems.Add("Opslaan", null, this.bestandOpslaan);
             menu.DropDownItems.Add("Sluiten", null, this.afsluiten);
             menuStrip.Items.Add(menu);
         }

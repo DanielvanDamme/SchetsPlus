@@ -10,12 +10,12 @@ namespace SchetsEditor
         private Schets schets;
         private Color penkleur;
 
-        // 2: Property om de tekening op te vragen
+        // 2: Property om de tekening op te vragen (om het op te slaan)
         public Bitmap GetBitmap
         {
             get { return schets.GetBitmap; }
         }
-        // 2: property om de wijzigingsstatus op te vragen of door te geven
+        // 2: Property om de wijzigingsstatus op te vragen of door te geven
         public bool IsBitmapGewijzigd
         {
             get { return schets.IsBitmapGewijzigd; }
@@ -24,7 +24,7 @@ namespace SchetsEditor
         public Color PenKleur 
         {   get { return penkleur; } 
         }
-        // 2: aangepaste constructor
+        // 2: Constructor geschikt gemaakt om een bestand te kunnen openen
         public SchetsControl(string bestandsLocatie)
         {   this.BorderStyle = BorderStyle.Fixed3D;
             this.schets = new Schets(bestandsLocatie);
@@ -32,7 +32,7 @@ namespace SchetsEditor
             this.Resize += this.veranderAfmeting;
             this.veranderAfmeting(null, null);
         }
-        // 2: constructor overloaded
+        // 2: Constructor overloading
         public SchetsControl() : this("")
         { }
         protected override void OnPaintBackground(PaintEventArgs e)

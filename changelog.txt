@@ -1,7 +1,9 @@
 ##CHANGELOG
 
+Aan het begin van iedere comment in de source code staat een nummer dat aanduidt tot welke van de 5 opdrachten 
+de onderstaande toevoeging c.q. wijziging behoort.
 
-  OPDRACHT 1     
+  OPDRACHT 1
 ################################################################################################################
 # BESTANDSNAAM   # AANPASSING                                                                                   
 ################################################################################################################
@@ -15,4 +17,11 @@
 ################################################################################################################
 # BESTANDSNAAM   # AANPASSING
 ################################################################################################################
-# Hoofscherm.cs  # Nieuwe abbonee op het FormClosing event.
+# Hoofscherm.cs  # Nieuwe methode om een OpenFileDialog aan te roepen. Daarnaast een nieuwe eventhandler die 
+#                # wordt meegegeven aan nieuwe instanties van SchetsWin.FormClosing via de openBestand methode.
+# SchetsWin.cs   # Een methode toegevoegd om een bestand op te slaan. Daarnaast opslaan aan het menu toegevoegd.
+# SctsControl.cs # Constructor SchetsWin accepteert nu ook een bestandsLocatie als parameter. 2 properties
+#                # toegevoegd om de Bitmap op te vragen en of de Bitmap gewijzigd is.
+# Schets.cs      # isBitmapGewijzigd als member variabele toegevoegd om wijzigingsstatus van de bitmap bij te 
+#                # houden. 2 properties toegevoegd en constructor aangepast net als in SchetsControl.cs.
+################################################################################################################
