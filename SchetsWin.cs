@@ -19,9 +19,12 @@ namespace SchetsEditor
             = new ResourceManager("SchetsEditor.Properties.Resources"
                                  , Assembly.GetExecutingAssembly()
                                  );
-        // 2: bestandslocatie
-        private string bestandsLocatie = "";
-
+        // 2: property om de wijzigingsstatus op te vragen of door te geven
+        public bool IsBitmapGewijzigd
+        {
+            get { return schetscontrol.IsBitmapGewijzigd; }
+            set { schetscontrol.IsBitmapGewijzigd = value; }
+        }
         private void veranderAfmeting(object o, EventArgs ea)
         {
             schetscontrol.Size = new Size ( this.ClientSize.Width  - 70
@@ -50,11 +53,10 @@ namespace SchetsEditor
             if (bestandOpslaan.ShowDialog() == DialogResult.OK)
             {
                 Bitmap bmp = schetscontrol.GetBitmap;
+
                 try
-                {
-                    bmp.Save(bestandOpslaan.FileName);
-                }
-                catch (IOException e)
+                {   bmp.Save(bestandOpslaan.FileName);    }
+                catch (Exception e)
                 {
                     MessageBox.Show("Fout bij het opslaan: " + e.Message, "Fout", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     succes = false;
@@ -62,8 +64,8 @@ namespace SchetsEditor
 
                 if (succes)
                 {
-                    bestandsLocatie = bestandOpslaan.FileName;
-                    MessageBox.Show("Tekening succesvol opgeslagen in: " + bestandOpslaan.FileName);
+                    schetscontrol.IsBitmapGewijzigd = false;
+                    MessageBox.Show("Tekening succesvol opgeslagen in:\n" + bestandOpslaan.FileName, "Bestand opgeslagen", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
             }
         }
@@ -121,6 +123,8 @@ namespace SchetsEditor
             this.maakAktieButtons(deKleuren);
             this.Resize += this.veranderAfmeting;
             this.veranderAfmeting(null, null);
+            
+              
         }
 
         // 2: overloaded constructor
@@ -132,7 +136,7 @@ namespace SchetsEditor
         {
             ToolStripMenuItem menu = new ToolStripMenuItem("File");
             menu.MergeAction = MergeAction.MatchOnly;
-            // Nieuwe regel
+            // 2: Menu item voor opslaan
             menu.DropDownItems.Add("Opslaan", null, this.opslaanHandler);
             menu.DropDownItems.Add("Sluiten", null, this.afsluiten);
             menuStrip.Items.Add(menu);

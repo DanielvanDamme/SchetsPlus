@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Drawing;
+using System.IO;
 using System.Windows.Forms;
 
 namespace SchetsEditor
@@ -42,7 +43,7 @@ namespace SchetsEditor
 
         private void nieuw(object sender, EventArgs e)
         {
-            nieuwWrapper();
+            nieuwWrapper("");
         }
         // 2: new wrapper
         private void nieuwWrapper(string bestandsLocatie)
@@ -52,11 +53,7 @@ namespace SchetsEditor
             s.Show();
             // Abboneer de functie schetsWindowAfsluiten op de FromClosing eventhandler
             s.FormClosing += schetsWindowAfsluiten;
-        }
-        // 2
-        private void nieuwWrapper()
-        {
-            nieuwWrapper("");
+            s.IsBitmapGewijzigd = false;
         }
 
         private void afsluiten(object sender, EventArgs e)
@@ -66,16 +63,20 @@ namespace SchetsEditor
         // Eventhandler voor het afsluiten van een schets window
         private void schetsWindowAfsluiten(object sender, FormClosingEventArgs e)
         {
-            DialogResult zekerAfsluiten = MessageBox.Show("Er zijn onopgeslagen wijzigingen, weet u zeker dat u dit scherm wilt sluiten?", "Schets sluiten", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation);
-            if (zekerAfsluiten == DialogResult.Yes)
+            if (((SchetsWin)sender).IsBitmapGewijzigd)
             {
-                ((SchetsWin)sender).FormClosing -= schetsWindowAfsluiten;
-                this.ActiveMdiChild.Close();
+                DialogResult zekerAfsluiten = MessageBox.Show("Er zijn een of meerdere wijzigingen onopgeslagen, \nweet u zeker dat u dit scherm wilt sluiten?", "Schets sluiten", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation);
+                if (zekerAfsluiten == DialogResult.Yes)
+                {
+                    ((SchetsWin)sender).FormClosing -= schetsWindowAfsluiten;
+                    this.ActiveMdiChild.Close();
+                }
+                else
+                    e.Cancel = true;
             }
-            else
-                e.Cancel = true;
         }
 
+        // 2: bestand openen methode
         private void openen(object sender, EventArgs e)
         {
             OpenFileDialog bestandOpenen = new OpenFileDialog();
@@ -84,7 +85,10 @@ namespace SchetsEditor
 
             if (bestandOpenen.ShowDialog() == DialogResult.OK)
             {
-                this.nieuwWrapper(bestandOpenen.FileName);
+                try
+                {   this.nieuwWrapper(bestandOpenen.FileName);   }
+                catch (Exception ex)
+                {   MessageBox.Show("Fout bij het openen: " + ex.Message, "Fout", MessageBoxButtons.OK, MessageBoxIcon.Error);    }
             }
 
         }

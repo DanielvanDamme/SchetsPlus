@@ -9,10 +9,17 @@ namespace SchetsEditor
     {
         private Schets schets;
         private Color penkleur;
-        // Property to get the drawing
+
+        // 2: Property om de tekening op te vragen
         public Bitmap GetBitmap
         {
             get { return schets.GetBitmap; }
+        }
+        // 2: property om de wijzigingsstatus op te vragen of door te geven
+        public bool IsBitmapGewijzigd
+        {
+            get { return schets.IsBitmapGewijzigd; }
+            set { schets.IsBitmapGewijzigd = value; }
         }
         public Color PenKleur 
         {   get { return penkleur; } 
