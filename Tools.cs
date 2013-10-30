@@ -26,22 +26,16 @@ namespace SchetsEditor
         }
         public abstract void MuisDrag(SchetsControl s, Point p);
         public abstract void Letter(SchetsControl s, char c);
-        public void bewaar(string tool, Point p, Point p1)
-        {
-            StreamWriter sw = new StreamWriter("temp.txt", true);
-            sw.WriteLine(tool + "." + p.X.ToString() + "." + p.Y.ToString() + "." + p1.X.ToString() + "." + p1.Y.ToString());
-            sw.Close();
-        }
-        public void bewaar(string tool, Point p)
+        protected void bewaar(string tool, Point p)
         {
             StreamWriter sw = new StreamWriter("temp.txt", true);
             sw.Write(tool + "." + p.X.ToString() + "." + p.Y.ToString());
             sw.Close();
         }
-        public void bewaar(Point p)
+        protected void bewaar(Point p, Brush kwast)
         {
             StreamWriter sw = new StreamWriter("temp.txt", true);
-            sw.WriteLine("." + p.X.ToString() + "." + p.Y.ToString());
+            sw.WriteLine("." + p.X.ToString() + "." + p.Y.ToString() + "." + ((SolidBrush)kwast).Color.Name);
             sw.Close();
         }
     }
@@ -102,7 +96,7 @@ namespace SchetsEditor
             s.Invalidate();
 
             // 3: Bewaar de tool informatie
-            bewaar(p);
+            bewaar(p, kwast);
         }
         public override void Letter(SchetsControl s, char c)
         {
