@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.IO;
 
 namespace SchetsEditor
 {
@@ -25,7 +26,27 @@ namespace SchetsEditor
         }
         public abstract void MuisDrag(SchetsControl s, Point p);
         public abstract void Letter(SchetsControl s, char c);
+        public void bewaar(string tool, Point p, Point p1)
+        {
+            StreamWriter sw = new StreamWriter("temp.txt", true);
+            sw.WriteLine(tool + "." + p.X.ToString() + "." + p.Y.ToString() + "." + p1.X.ToString() + "." + p1.Y.ToString());
+            sw.Close();
+        }
+        public void bewaar(string tool, Point p)
+        {
+            StreamWriter sw = new StreamWriter("temp.txt", true);
+            sw.Write(tool + "." + p.X.ToString() + "." + p.Y.ToString());
+            sw.Close();
+        }
+        public void bewaar(Point p)
+        {
+            StreamWriter sw = new StreamWriter("temp.txt", true);
+            sw.WriteLine("." + p.X.ToString() + "." + p.Y.ToString());
+            sw.Close();
+        }
     }
+
+    
 
     public class TekstTool : StartpuntTool
     {
@@ -67,6 +88,9 @@ namespace SchetsEditor
         public override void MuisVast(SchetsControl s, Point p)
         {   base.MuisVast(s, p);
             kwast = Brushes.Gray;
+
+            // 3: Bewaar de tool informatie
+            bewaar(ToString(), p);
         }
         public override void MuisDrag(SchetsControl s, Point p)
         {   s.Refresh();
@@ -76,6 +100,9 @@ namespace SchetsEditor
         {   base.MuisLos(s, p);
             this.Compleet(s.MaakBitmapGraphics(), this.startpunt, p);
             s.Invalidate();
+
+            // 3: Bewaar de tool informatie
+            bewaar(p);
         }
         public override void Letter(SchetsControl s, char c)
         {
@@ -92,7 +119,8 @@ namespace SchetsEditor
         public override string ToString() { return "kader"; }
 
         public override void Bezig(Graphics g, Point p1, Point p2)
-        {   g.DrawRectangle(MaakPen(kwast,3), TweepuntTool.Punten2Rechthoek(p1, p2));
+        {
+            g.DrawRectangle(MaakPen(kwast,3), TweepuntTool.Punten2Rechthoek(p1, p2));
         }
     }
     

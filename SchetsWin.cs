@@ -92,7 +92,7 @@ namespace SchetsEditor
 
             this.ClientSize = new Size(700, 500);
             huidigeTool = deTools[0];
-            // 2: Bestandslocatie meegeven aan de constructor 
+            // 2: Bestandslocatie meegeven aan SchetsControl
             schetscontrol = new SchetsControl(bestandsLocatie);
             schetscontrol.Location = new Point(64, 10);
             schetscontrol.MouseDown += (object o, MouseEventArgs mea) =>
@@ -105,7 +105,7 @@ namespace SchetsEditor
                                        };
             schetscontrol.MouseUp   += (object o, MouseEventArgs mea) =>
                                        {   vast=false; 
-                                           huidigeTool.MuisLos (schetscontrol, mea.Location); 
+                                           huidigeTool.MuisLos (schetscontrol, mea.Location);
                                        };
             schetscontrol.KeyPress +=  (object o, KeyPressEventArgs kpea) => 
                                        {   huidigeTool.Letter  (schetscontrol, kpea.KeyChar); 
