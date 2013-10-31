@@ -10,6 +10,11 @@ namespace SchetsEditor
     {
         private List<DrawObject> objects = new List<DrawObject>();
 
+        public List<DrawObject> getObjects
+        {
+            get { return objects; }
+        }
+
         public void SerializeToXML()
         {
             XmlSerializer serializer = new XmlSerializer(typeof(List<DrawObject>));
@@ -37,7 +42,7 @@ namespace SchetsEditor
 
     public class DrawFromXML
     {
-        public void DrawingFromXML(Graphics gr, List<DrawObject> objects)
+        public static void DrawingFromXML(Graphics gr, List<DrawObject> objects)
         {
             Font font = new Font("Tahoma", 40);
 
