@@ -18,6 +18,17 @@ namespace SchetsEditor
             writer.Close();
         }
 
+        public List<DrawObject> DeserializeFromXML()
+        {
+            XmlSerializer deserializer = new XmlSerializer(typeof(List<DrawObject>));
+            TextReader textReader = new StreamReader(@"temp.xml");
+            List<DrawObject> objects;
+            objects = (List<DrawObject>)deserializer.Deserialize(textReader);
+            textReader.Close();
+
+            return objects;
+        }
+
         public void assignObject(DrawObject tekenObject)
         {
             objects.Add(tekenObject);
