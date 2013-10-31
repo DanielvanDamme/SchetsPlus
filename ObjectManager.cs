@@ -35,6 +35,45 @@ namespace SchetsEditor
         }
     }
 
+    public class DrawFromXML
+    {
+        public void DrawingFromXML(Graphics gr, List<DrawObject> objects)
+        {
+            Font font = new Font("Tahoma", 40);
+
+            foreach (DrawObject obj in objects)
+            {
+                Color color = Color.FromName(obj.Color);
+                SolidBrush brush = new SolidBrush(color);
+                Pen pen = new Pen(brush, 3);
+                Size size = new Size(Math.Abs(obj.Point1.X - obj.Point2.X), Math.Abs(obj.Point1.Y - obj.Point2.Y));
+                Rectangle rect = new Rectangle(obj.Point1, size);
+
+                switch (obj.Tool)
+                {
+                    case "tekst":
+                        gr.DrawString(obj.Text, font, brush, obj.Point1, StringFormat.GenericTypographic);
+                        break;
+                    case "kader":
+                        gr.DrawRectangle(pen, rect);
+                        break;
+                    case "vlak":
+                        gr.FillRectangle(brush, rect);
+                        break;
+                    case "cirkel":
+                        gr.DrawEllipse(pen, rect);
+                        break;
+                    case "rondje":
+                        gr.FillEllipse(brush, rect);
+                        break;
+                    case "lijn":
+                        gr.DrawLine(pen, obj.Point1, obj.Point2);
+                        break;
+                }
+            }
+        }
+    }
+
     public class DrawObject
     {
         public DrawObject()
