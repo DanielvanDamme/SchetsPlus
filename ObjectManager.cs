@@ -51,8 +51,20 @@ namespace SchetsEditor
                 Color color = Color.FromName(obj.Color);
                 SolidBrush brush = new SolidBrush(color);
                 Pen pen = new Pen(brush, 3);
-                Size size = new Size(Math.Abs(obj.Point1.X - obj.Point2.X), Math.Abs(obj.Point1.Y - obj.Point2.Y));
-                Rectangle rect = new Rectangle(obj.Point1, size);
+                Size size = new Size(obj.Point2.X - obj.Point1.X, obj.Point2.Y - obj.Point1.Y);
+                Point startPoint = obj.Point1;
+                // Fix coords when dragging from Right to Left / Bottom to Top
+                if(size.Width < 0)
+                {
+                    startPoint.X += size.Width;
+                    size.Width = Math.Abs(size.Width);
+                }
+                if (size.Height < 0)
+                {
+                    startPoint.Y += size.Height;
+                    size.Height = Math.Abs(size.Height);
+                }
+                Rectangle rect = new Rectangle(startPoint, size);
 
                 switch (obj.Tool)
                 {
@@ -72,6 +84,9 @@ namespace SchetsEditor
                         gr.FillEllipse(brush, rect);
                         break;
                     case "lijn":
+                        gr.DrawLine(pen, obj.Point1, obj.Point2);
+                        break;
+                    case "pen":
                         gr.DrawLine(pen, obj.Point1, obj.Point2);
                         break;
                 }
