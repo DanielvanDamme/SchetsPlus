@@ -10,6 +10,14 @@ namespace SchetsEditor
         private Schets schets;
         private Color penkleur;
 
+        private ObjectManager objectmanager = new ObjectManager();
+
+        public ObjectManager GetManager
+        {
+            get { return objectmanager; }
+        }
+
+
         // 2: Property om de tekening op te vragen (om het op te slaan)
         public Bitmap GetBitmap
         {

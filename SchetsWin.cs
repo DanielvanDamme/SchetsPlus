@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Xml.Serialization;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
@@ -9,7 +10,7 @@ using System.IO;
 namespace SchetsEditor
 {
     public class SchetsWin : Form
-    {   
+    {
         MenuStrip menuStrip;
         SchetsControl schetscontrol;
         ISchetsTool huidigeTool;
@@ -19,6 +20,7 @@ namespace SchetsEditor
             = new ResourceManager("SchetsEditor.Properties.Resources"
                                  , Assembly.GetExecutingAssembly()
                                  );
+
         // 2: Property om de wijzigingsstatus op te vragen of door te geven
         public bool IsBitmapGewijzigd
         {
@@ -53,9 +55,13 @@ namespace SchetsEditor
             if (bestandOpslaan.ShowDialog() == DialogResult.OK)
             {
                 Bitmap bmp = schetscontrol.GetBitmap;
+                ObjectManager objectmanager = schetscontrol.GetManager;
 
                 try
-                {   bmp.Save(bestandOpslaan.FileName);    }
+                { 
+                    bmp.Save(bestandOpslaan.FileName);
+                    objectmanager.SerializeToXML();
+                }
                 catch (Exception e)
                 {
                     MessageBox.Show("Fout bij het opslaan: " + e.Message, "Fout", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -92,6 +98,8 @@ namespace SchetsEditor
 
             this.ClientSize = new Size(700, 500);
             huidigeTool = deTools[0];
+
+
             // 2: Bestandslocatie meegeven aan SchetsControl
             schetscontrol = new SchetsControl(bestandsLocatie);
             schetscontrol.Location = new Point(64, 10);

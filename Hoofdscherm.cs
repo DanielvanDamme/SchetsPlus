@@ -71,6 +71,7 @@ namespace SchetsEditor
                 {
                     ((SchetsWin)sender).FormClosing -= schetsWindowAfsluiten;
                     this.ActiveMdiChild.Close();
+                    
                 }
                 else
                     e.Cancel = true;

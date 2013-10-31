@@ -17,6 +17,7 @@ namespace SchetsEditor
     {
         protected Point startpunt;
         protected Brush kwast;
+        protected DrawObject obj = new DrawObject();
 
         public virtual void MuisVast(SchetsControl s, Point p)
         {   startpunt = p;
@@ -26,21 +27,8 @@ namespace SchetsEditor
         }
         public abstract void MuisDrag(SchetsControl s, Point p);
         public abstract void Letter(SchetsControl s, char c);
-        protected void bewaar(string tool, Point p)
-        {
-            StreamWriter sw = new StreamWriter("temp.txt", true);
-            sw.Write(tool + "." + p.X.ToString() + "." + p.Y.ToString());
-            sw.Close();
-        }
-        protected void bewaar(Point p, Brush kwast)
-        {
-            StreamWriter sw = new StreamWriter("temp.txt", true);
-            sw.WriteLine("." + p.X.ToString() + "." + p.Y.ToString() + "." + ((SolidBrush)kwast).Color.Name);
-            sw.Close();
-        }
-    }
 
-    
+    }
 
     public class TekstTool : StartpuntTool
     {
@@ -60,6 +48,15 @@ namespace SchetsEditor
                 gr.DrawString   (tekst, font, kwast, 
                                               this.startpunt, StringFormat.GenericTypographic);
                 // gr.DrawRectangle(Pens.Black, startpunt.X, startpunt.Y, sz.Width, sz.Height);
+
+                obj.Tool = ToString();
+                obj.Point1 = startpunt;
+                obj.Color = ((SolidBrush)kwast).Color.Name;
+                obj.Text = tekst;
+
+                ObjectManager objectmanager = s.GetManager;
+                objectmanager.assignObject(obj);
+
                 startpunt.X += (int)sz.Width;
                 s.Invalidate();
             }
@@ -83,8 +80,10 @@ namespace SchetsEditor
         {   base.MuisVast(s, p);
             kwast = Brushes.Gray;
 
-            // 3: Bewaar de tool informatie
-            bewaar(ToString(), p);
+            obj.Tool = ToString();
+            obj.Point1 = p;
+            obj.Color = (s.PenKleur).Name;
+            
         }
         public override void MuisDrag(SchetsControl s, Point p)
         {   s.Refresh();
@@ -95,8 +94,9 @@ namespace SchetsEditor
             this.Compleet(s.MaakBitmapGraphics(), this.startpunt, p);
             s.Invalidate();
 
-            // 3: Bewaar de tool informatie
-            bewaar(p, kwast);
+            obj.Point2 = p;
+            ObjectManager objectmanager = s.GetManager;
+            objectmanager.assignObject(obj);
         }
         public override void Letter(SchetsControl s, char c)
         {
