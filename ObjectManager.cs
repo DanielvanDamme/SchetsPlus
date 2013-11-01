@@ -15,10 +15,16 @@ namespace SchetsEditor
             get { return objects; }
         }
 
+        public void assignObject(DrawObject tekenObject)
+        {
+            objects.Add(tekenObject);
+        }
+
         public void SerializeToXML()
         {
             XmlSerializer serializer = new XmlSerializer(typeof(List<DrawObject>));
-            StreamWriter writer = new StreamWriter(@"temp.xml");
+            // StreamWriter is een speciaal soort TextWriter
+            TextWriter writer = new StreamWriter(@"temp.xml");
             serializer.Serialize(writer, this.objects);
             writer.Close();
         }
@@ -26,17 +32,11 @@ namespace SchetsEditor
         public List<DrawObject> DeserializeFromXML()
         {
             XmlSerializer deserializer = new XmlSerializer(typeof(List<DrawObject>));
-            TextReader textReader = new StreamReader(@"temp.xml");
-            List<DrawObject> objects;
-            objects = (List<DrawObject>)deserializer.Deserialize(textReader);
-            textReader.Close();
+            TextReader reader = new StreamReader(@"temp.xml");
+            List<DrawObject> objects = (List<DrawObject>)deserializer.Deserialize(reader);
+            reader.Close();
 
             return objects;
-        }
-
-        public void assignObject(DrawObject tekenObject)
-        {
-            objects.Add(tekenObject);
         }
     }
 
