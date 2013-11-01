@@ -1,10 +1,13 @@
-##PROBELEMEN
+#####
+## PROBLEMEN
+#####
 
 programma opstarten > new scherm > afsluiten > dan zegt ie dat er wijzigingen zijn maar dat is niet zo. Komt omdat 
 de OnrepaintBackground() 2x wordt aangeroepen
 
-
-##CHANGELOG
+#####
+## CHANGELOG
+#####
 
 Aan het begin van iedere comment in de source code staat een nummer dat aanduidt tot welke van de 5 opdrachten 
 de onderstaande toevoeging c.q. wijziging behoort.
