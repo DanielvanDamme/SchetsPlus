@@ -34,7 +34,6 @@ namespace SchetsEditor
             startpunt = p;
             kleur = Color.FromName((s.PenKleur).Name);
             kwast = new SolidBrush(kleur);
-            pen = new Pen(kwast, 3);
 
             objectmanager.assignObject(obj);
             points.Add(p);
