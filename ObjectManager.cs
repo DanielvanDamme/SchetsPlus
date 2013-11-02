@@ -61,7 +61,6 @@ namespace SchetsEditor
                 switch (obj.Tool)
                 {
                     case "tekst":
-                        
                         gr.DrawString(obj.Text, font, brush, obj.Points[0], StringFormat.GenericTypographic);
                         break;
                     case "kader":

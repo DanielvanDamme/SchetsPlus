@@ -116,6 +116,8 @@ namespace SchetsEditor
 
         public abstract void Teken(Graphics g, Point p1, Point p2);
 
+        public abstract void Teken(Graphics g, Point p1, Point p2, Brush kwast);
+
         public override void Letter(SchetsControl s, char c) { }
     }
 
@@ -128,7 +130,7 @@ namespace SchetsEditor
             Teken(g, p1, p2, kwast);
         }
 
-        public void Teken(Graphics g, Point p1, Point p2, Brush kwast)
+        public override void Teken(Graphics g, Point p1, Point p2, Brush kwast)
         {
             g.DrawRectangle(MaakPen(kwast, 3), TweepuntTool.Punten2Rechthoek(p1, p2));
         }
@@ -144,7 +146,7 @@ namespace SchetsEditor
             Teken(g, p1, p2, kwast);
         }
 
-        public void Teken(Graphics g, Point p1, Point p2, Brush kwast)
+        public override void Teken(Graphics g, Point p1, Point p2, Brush kwast)
         {
             g.FillRectangle(kwast, TweepuntTool.Punten2Rechthoek(p1, p2));
         }
@@ -159,7 +161,7 @@ namespace SchetsEditor
             Teken(g, p1, p2, kwast);
         }
 
-        public void Teken(Graphics g, Point p1, Point p2, Brush kwast)
+        public override void Teken(Graphics g, Point p1, Point p2, Brush kwast)
         {
             g.DrawEllipse(MaakPen(kwast, 3), TweepuntTool.Punten2Rechthoek(p1, p2));
         }
@@ -175,7 +177,7 @@ namespace SchetsEditor
             Teken(g, p1, p2, kwast);
         }
 
-        public void Teken(Graphics g, Point p1, Point p2, Brush kwast)
+        public override void Teken(Graphics g, Point p1, Point p2, Brush kwast)
         {
             g.FillEllipse(kwast, TweepuntTool.Punten2Rechthoek(p1, p2));
         }
@@ -190,7 +192,7 @@ namespace SchetsEditor
             Teken(g, p1, p2, kwast);
         }
 
-        public void Teken(Graphics g, Point p1, Point p2, Brush kwast)
+        public override void Teken(Graphics g, Point p1, Point p2, Brush kwast)
         {
             g.DrawLine(MaakPen(kwast, 3), p1, p2);
         }
@@ -211,7 +213,7 @@ namespace SchetsEditor
             Teken(g, p1, p2, kwast);
         }
 
-        public void Teken(Graphics g, Point p1, Point p2, Brush kwast)
+        public override void Teken(Graphics g, Point p1, Point p2, Brush kwast)
         {
             for (int i = 1; i < points.Count; i++)
                 g.DrawLine(MaakPen(kwast, 3), points[i - 1], points[i]);
