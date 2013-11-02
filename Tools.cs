@@ -22,15 +22,15 @@ namespace SchetsEditor
         protected Point startpunt;
         protected TekenObject obj;
         protected List<Point> points;
-        protected ObjectControl objectmanager = new ObjectControl();
+        protected ObjectControl objectmanager;
 
         public virtual void MuisVast(SchetsControl s, Point p)
         {
-            kwast = new SolidBrush(Color.FromName((s.PenKleur).Name));
+            kwast = new SolidBrush(s.PenKleur);
             startpunt = p;
             obj = new TekenObject();
             points = new List<Point>();
-            objectmanager = s.GetManager;       
+            objectmanager = s.GetManager;
 
             objectmanager.objectToewijzen(obj);
             points.Add(p);
@@ -65,11 +65,11 @@ namespace SchetsEditor
                 for (int i = 0; i < (obj.Tekst.Length - 1); i++)
                     res += obj.Tekst[i];
                 obj.Tekst = res;
-                s.MaakBitmapGraphics().FillRectangle(Brushes.White, 0, 0, s.GetBitmap.Width, s.GetBitmap.Height);
-            } else if (c >= 32) {
-                obj.Tekst += c.ToString();
             }
+            else if (c >= 32)
+            { obj.Tekst += c.ToString(); }
 
+            s.MaakBitmapGraphics().FillRectangle(Brushes.White, 0, 0, s.GetBitmap.Width, s.GetBitmap.Height);
             s.Invalidate();
             DrawFromXML.DrawingFromXML(s.MaakBitmapGraphics(), objectmanager.getObjects);
         }
