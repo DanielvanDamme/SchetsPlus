@@ -11,6 +11,7 @@ namespace SchetsEditor
 {
     public class SchetsWin : Form
     {
+        
         MenuStrip menuStrip;
         SchetsControl schetscontrol;
         ISchetsTool huidigeTool;

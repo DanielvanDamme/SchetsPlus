@@ -57,29 +57,30 @@ namespace SchetsEditor
                     rect = new Rectangle(punt, grootte);
                 }
 
+
                 switch (obj.Tool)
                 {
                     case "tekst":
+                        
                         gr.DrawString(obj.Text, font, brush, obj.Points[0], StringFormat.GenericTypographic);
                         break;
                     case "kader":
-                        gr.DrawRectangle(pen, rect);
+                        new RechthoekTool().Teken(gr, obj.Points[0], obj.Points[1], brush);
                         break;
                     case "vlak":
-                        gr.FillRectangle(brush, rect);
+                        new VolRechthoekTool().Teken(gr, obj.Points[0], obj.Points[1], brush);
                         break;
                     case "cirkel":
-                        gr.DrawEllipse(pen, rect);
+                        new CirkelTool().Teken(gr, obj.Points[0], obj.Points[1], brush);
                         break;
                     case "rondje":
-                        gr.FillEllipse(brush, rect);
+                        new RondjeTool().Teken(gr, obj.Points[0], obj.Points[1], brush);
                         break;
                     case "lijn":
-                        gr.DrawLine(pen, obj.Points[0], obj.Points[1]);
+                        new LijnTool().Teken(gr, obj.Points[0], obj.Points[1], brush);
                         break;
                     case "pen":
-                        for (int i = 1; i < obj.Points.Count; i++)
-                            gr.DrawLine(pen, obj.Points[i - 1], obj.Points[i]);
+                        new PenTool().Teken(gr, obj.Points[0], obj.Points[1], brush);
                         break;
                 }
             }
