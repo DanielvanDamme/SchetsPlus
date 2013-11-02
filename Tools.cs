@@ -18,7 +18,6 @@ namespace SchetsEditor
 
     public abstract class StartpuntTool : ISchetsTool
     {
-        protected Pen pen;
         protected Brush kwast;
         protected Color kleur;
         protected Point startpunt;
@@ -62,15 +61,18 @@ namespace SchetsEditor
 
         public override void Letter(SchetsControl s, char c)
         {
-            if (c >= 32)
+            if (c == 8)
             {
-                string tekst = c.ToString();
-
-                obj.Text += tekst;
-
-                s.Invalidate();
-                DrawFromXML.DrawingFromXML(s.MaakBitmapGraphics(), objectmanager.getObjects);
+                string res = "";
+                for (int i = 0; i < (obj.Text.Length - 1); i++)
+                    res += obj.Text[i];
+                obj.Text = res;
+            } else if (c >= 32) {
+                obj.Text += c.ToString();
             }
+
+            s.Invalidate();
+            DrawFromXML.DrawingFromXML(s.MaakBitmapGraphics(), objectmanager.getObjects);
         }
     }
 
