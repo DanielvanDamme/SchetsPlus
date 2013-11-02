@@ -44,7 +44,16 @@ namespace SchetsEditor
         private void openBestand(string bestandsLocatie)
         {
             if (bestandsLocatie != "")
-                bitmap = new Bitmap(bestandsLocatie);
+            {
+                if (Path.GetExtension(bestandsLocatie) == ".xml")
+                {
+                    //SchetsEditor.ObjectManager.DeserializeFromXML(bestandsLocatie);
+                }
+                else
+                {
+                    bitmap = new Bitmap(bestandsLocatie);
+                }
+            }
         }
 
         public void VeranderAfmeting(Size sz)
