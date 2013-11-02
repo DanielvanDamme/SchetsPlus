@@ -4,6 +4,7 @@ using System.Drawing.Drawing2D;
 using System.IO;
 using System.Collections.Generic;
 using System.Windows;
+using System.Windows.Forms;
 
 namespace SchetsEditor
 {
@@ -27,7 +28,6 @@ namespace SchetsEditor
         public virtual void MuisVast(SchetsControl s, Point p)
         {
             points = new List<Point>();
-            obj = new DrawObject();
             startpunt = p;
             kleur = Color.FromName((s.PenKleur).Name);
             kwast = new SolidBrush(kleur);
@@ -51,13 +51,15 @@ namespace SchetsEditor
         {
             if (c >= 32)
             {
+                points.Add(startpunt);
                 string tekst = c.ToString();
 
+                obj = new DrawObject();
+
                 obj.Tool = ToString();
-                points.Add(startpunt);
+                obj.Text = tekst;
                 obj.Points = points;
                 obj.Color = kleur.Name;
-                obj.Text = tekst;
 
                 ObjectManager objectmanager = s.GetManager;
                 objectmanager.assignObject(obj);
@@ -68,6 +70,8 @@ namespace SchetsEditor
                 s.Invalidate();
                 DrawFromXML.DrawingFromXML(gr, objectmanager.getObjects);
                 startpunt.X += (int)sz.Width;
+
+                points = new List<Point>();
             }
         }
     }
@@ -87,8 +91,9 @@ namespace SchetsEditor
 
             points.Add(p);
 
+            obj = new DrawObject();
             obj.Tool = ToString();
-            obj.Color = (s.PenKleur).Name;
+            obj.Color = kleur.Name;
         }
 
         public override void MuisDrag(SchetsControl s, Point p)
