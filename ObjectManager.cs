@@ -51,25 +51,19 @@ namespace SchetsEditor
                 Color color = Color.FromName(obj.Color);
                 SolidBrush brush = new SolidBrush(color);
                 Pen pen = new Pen(brush, 3);
-                Size size = new Size(obj.Point2.X - obj.Point1.X, obj.Point2.Y - obj.Point1.Y);
-                Point startPoint = obj.Point1;
-                // Fix coords when dragging from Right to Left / Bottom to Top
-                if(size.Width < 0)
+                Rectangle rect = new Rectangle();
+
+                if (obj.Tool == "kader" || obj.Tool == "vlak" || obj.Tool == "cirkel" || obj.Tool == "rondje")
                 {
-                    startPoint.X += size.Width;
-                    size.Width = Math.Abs(size.Width);
+                    Point punt = new Point(Math.Min(obj.Points[0].X, obj.Points[1].X), Math.Min(obj.Points[0].Y, obj.Points[1].Y));
+                    Size grootte = new Size(Math.Abs(obj.Points[0].X - obj.Points[1].X), Math.Abs(obj.Points[0].Y - obj.Points[1].Y));
+                    rect = new Rectangle(punt, grootte);
                 }
-                if (size.Height < 0)
-                {
-                    startPoint.Y += size.Height;
-                    size.Height = Math.Abs(size.Height);
-                }
-                Rectangle rect = new Rectangle(startPoint, size);
 
                 switch (obj.Tool)
                 {
                     case "tekst":
-                        gr.DrawString(obj.Text, font, brush, obj.Point1, StringFormat.GenericTypographic);
+                        gr.DrawString(obj.Text, font, brush, obj.Points[0], StringFormat.GenericTypographic);
                         break;
                     case "kader":
                         gr.DrawRectangle(pen, rect);
@@ -84,10 +78,11 @@ namespace SchetsEditor
                         gr.FillEllipse(brush, rect);
                         break;
                     case "lijn":
-                        gr.DrawLine(pen, obj.Point1, obj.Point2);
+                        gr.DrawLine(pen, obj.Points[0], obj.Points[1]);
                         break;
                     case "pen":
-                        gr.DrawLine(pen, obj.Point1, obj.Point2);
+                        for (int i = 1; i < obj.Points.Count; i++)
+                            gr.DrawLine(pen, obj.Points[i - 1], obj.Points[i]);
                         break;
                 }
             }
@@ -102,16 +97,14 @@ namespace SchetsEditor
         public string Tool
         { get; set; }
 
-        public Point Point1
-        { get; set; }
-
-        public Point Point2
-        { get; set; }
+        public List<Point> Points { get; set; }
 
         public string Color
         { get; set; }
 
         public string Text
         { get; set; }
+
+        
     }
 }

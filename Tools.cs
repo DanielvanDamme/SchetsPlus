@@ -2,6 +2,7 @@
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.IO;
+using System.Collections.Generic;
 using System.Windows;
 
 namespace SchetsEditor
@@ -21,9 +22,11 @@ namespace SchetsEditor
         protected Color kleur;
         protected Point startpunt;
         protected DrawObject obj;
+        protected List<Point> points;
 
         public virtual void MuisVast(SchetsControl s, Point p)
         {
+            points = new List<Point>();
             obj = new DrawObject();
             startpunt = p;
             kleur = Color.FromName((s.PenKleur).Name);
@@ -51,7 +54,8 @@ namespace SchetsEditor
                 string tekst = c.ToString();
 
                 obj.Tool = ToString();
-                obj.Point1 = startpunt;
+                points.Add(startpunt);
+                obj.Points = points;
                 obj.Color = kleur.Name;
                 obj.Text = tekst;
 
@@ -81,8 +85,9 @@ namespace SchetsEditor
         {
             base.MuisVast(s, p);
 
+            points.Add(p);
+
             obj.Tool = ToString();
-            obj.Point1 = p;
             obj.Color = (s.PenKleur).Name;
         }
 
@@ -93,8 +98,10 @@ namespace SchetsEditor
         }
 
         public override void MuisLos(SchetsControl s, Point p)
-        {   
-            obj.Point2 = p;
+        {
+            points.Add(p);
+
+            obj.Points = points;
 
             ObjectManager objectmanager = s.GetManager;
             objectmanager.assignObject(obj);
@@ -164,8 +171,14 @@ namespace SchetsEditor
 
         public override void MuisDrag(SchetsControl s, Point p)
         {
-            this.MuisLos(s, p);
-            this.MuisVast(s, p);
+            base.MuisDrag(s, p);
+            points.Add(p);
+        }
+
+        public override void Bezig(Graphics g, Point p1, Point p2)
+        {
+            for (int i = 1; i < points.Count; i++)
+                g.DrawLine(pen, points[i - 1], points[i]);
         }
     }
     
