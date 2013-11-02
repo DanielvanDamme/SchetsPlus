@@ -41,9 +41,18 @@ namespace SchetsEditor
             objecten.Add(tekenObject);
         }
 
+        //public void objectVerwijderen(Point p)
+        //{
+        //    for (int i = objecten.Count; i >= 0; i--)
+        //    {
+        //        if(objecten[i].Points[0].X > p.X && objecten[i].Points[1].X < p.X
+        //    }
+            
+        //}
+
         public void actieTerugdraaien()
         {
-            if (objecten.Count > 0) 
+            if (objecten.Count > 0)
                 objecten.RemoveAt(objecten.Count-1);
         }
     }

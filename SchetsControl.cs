@@ -70,6 +70,7 @@ namespace SchetsEditor
         public void Terugdraaien(object o, EventArgs ea)
         {
             schets.Terugdraaien();
+            this.Invalidate();
         }
         public void VeranderKleur(object obj, EventArgs ea)
         {   string kleurNaam = ((ComboBox)obj).Text;

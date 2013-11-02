@@ -216,8 +216,31 @@ namespace SchetsEditor
         }
     }
     
-    public class GumTool : PenTool
+    public class GumTool : StartpuntTool
     {
         public override string ToString() { return "gum"; }
+
+        public override void Letter(SchetsControl s, char c)
+        {
+            
+        }
+
+        public override void MuisDrag(SchetsControl s, Point p)
+        {
+            
+        }
+
+        public override void MuisVast(SchetsControl s, Point p)
+        {
+            base.MuisVast(s, p);
+        }
+
+        public override void MuisLos(SchetsControl s, Point p)
+        {
+            base.MuisLos(s, p);
+            objectmanager.verwijderObjecten();
+            s.MaakBitmapGraphics().FillRectangle(Brushes.White, 0, 0, s.GetBitmap.Width, s.GetBitmap.Height);
+            s.Invalidate();
+        }
     }
 }
