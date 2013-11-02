@@ -14,7 +14,8 @@ namespace SchetsEditor
         public string Tool
         { get; set; }
 
-        public List<Point> Points { get; set; }
+        public List<Point> Points 
+        { get; set; }
 
         public string Kleur
         { get; set; }

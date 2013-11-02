@@ -94,6 +94,7 @@ namespace SchetsEditor
         {
             Graphics gr = Graphics.FromImage(bitmap);
             gr.FillRectangle(Brushes.White, 0, 0, bitmap.Width, bitmap.Height);
+            objectmanager.verwijderObjecten();
             // 2: Deze actie veroorzaakt een wijziging
             this.isBitmapGewijzigd = true;
         }

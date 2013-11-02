@@ -15,6 +15,11 @@ namespace SchetsEditor
             get { return objecten; }
         }
 
+        public void verwijderObjecten()
+        {
+            objecten = new List<TekenObject>();
+        }
+
         public void SerializeToXML(string bestandsnaam)
         {
             XmlSerializer serializer = new XmlSerializer(typeof(List<TekenObject>));
