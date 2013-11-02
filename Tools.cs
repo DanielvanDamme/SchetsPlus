@@ -204,16 +204,12 @@ namespace SchetsEditor
 
         public override void MuisDrag(SchetsControl s, Point p)
         {
-            base.MuisDrag(s, p);
             points.Add(p);
+            s.Refresh();
+            TekenLijn(s.CreateGraphics(), points, kwast);
         }
 
-        public override void Teken(Graphics g, Point p1, Point p2)
-        {
-            Teken(g, p1, p2, kwast);
-        }
-
-        public override void Teken(Graphics g, Point p1, Point p2, Brush kwast)
+        public void TekenLijn(Graphics g, List<Point> points, Brush kwast)
         {
             for (int i = 1; i < points.Count; i++)
                 g.DrawLine(MaakPen(kwast, 3), points[i - 1], points[i]);

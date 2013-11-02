@@ -79,7 +79,7 @@ namespace SchetsEditor
                         new LijnTool().Teken(gr, obj.Points[0], obj.Points[1], brush);
                         break;
                     case "pen":
-                        new PenTool().Teken(gr, obj.Points[0], obj.Points[1], brush);
+                        new PenTool().TekenLijn(gr, obj.Points, brush);
                         break;
                 }
             }
