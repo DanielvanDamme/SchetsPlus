@@ -205,7 +205,6 @@ namespace SchetsEditor
         public override void MuisDrag(SchetsControl s, Point p)
         {
             points.Add(p);
-            s.Refresh();
             TekenLijn(s.CreateGraphics(), points, kwast);
         }
 
