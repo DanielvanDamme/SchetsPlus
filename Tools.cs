@@ -109,6 +109,7 @@ namespace SchetsEditor
 
             obj.Points = points;
 
+            
             s.Invalidate();
             DrawFromXML.DrawingFromXML(s.MaakBitmapGraphics(), objectmanager.getObjects);
         }
