@@ -59,7 +59,7 @@ namespace SchetsEditor
                 {
                     if (Path.GetExtension(bestandOpslaan.FileName) == ".xml")
                     {
-                        ObjectManager objectmanager = schetscontrol.GetManager;
+                        ObjectControl objectmanager = schetscontrol.GetManager;
                         objectmanager.SerializeToXML(bestandOpslaan.FileName);
                     }
                     else

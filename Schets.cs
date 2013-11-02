@@ -15,9 +15,9 @@ namespace SchetsEditor
         private bool isNieuwScherm = true;
         private Bitmap bitmap;
 
-        private ObjectManager objectmanager = new ObjectManager();
+        private ObjectControl objectmanager = new ObjectControl();
 
-        public ObjectManager GetManager
+        public ObjectControl GetManager
         {
             get { return objectmanager; }
         }

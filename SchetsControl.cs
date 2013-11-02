@@ -12,7 +12,7 @@ namespace SchetsEditor
 
         
 
-        public ObjectManager GetManager
+        public ObjectControl GetManager
         {
             get { return schets.GetManager; }
         }

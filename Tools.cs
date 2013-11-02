@@ -19,24 +19,22 @@ namespace SchetsEditor
     public abstract class StartpuntTool : ISchetsTool
     {
         protected Brush kwast;
-        protected Color kleur;
         protected Point startpunt;
-        protected DrawObject obj;
+        protected TekenObject obj;
         protected List<Point> points;
-        protected ObjectManager objectmanager = new ObjectManager();
+        protected ObjectControl objectmanager = new ObjectControl();
 
         public virtual void MuisVast(SchetsControl s, Point p)
         {
-            objectmanager = s.GetManager;
-            points = new List<Point>();
-            obj = new DrawObject();
+            kwast = new SolidBrush(Color.FromName((s.PenKleur).Name));
             startpunt = p;
-            kleur = Color.FromName((s.PenKleur).Name);
-            kwast = new SolidBrush(kleur);
+            obj = new TekenObject();
+            points = new List<Point>();
+            objectmanager = s.GetManager;       
 
-            objectmanager.assignObject(obj);
+            objectmanager.objectToewijzen(obj);
             points.Add(p);
-            obj.Color = kleur.Name;
+            obj.Kleur = (s.PenKleur).Name;
         }
 
         public virtual void MuisLos(SchetsControl s, Point p) { }
@@ -64,11 +62,11 @@ namespace SchetsEditor
             if (c == 8)
             {
                 string res = "";
-                for (int i = 0; i < (obj.Text.Length - 1); i++)
-                    res += obj.Text[i];
-                obj.Text = res;
+                for (int i = 0; i < (obj.Tekst.Length - 1); i++)
+                    res += obj.Tekst[i];
+                obj.Tekst = res;
             } else if (c >= 32) {
-                obj.Text += c.ToString();
+                obj.Tekst += c.ToString();
             }
 
             s.Invalidate();
