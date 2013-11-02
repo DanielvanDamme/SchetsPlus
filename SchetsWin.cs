@@ -212,20 +212,26 @@ namespace SchetsEditor
             b.Location = new Point(  0, 0); 
             b.Click += schetscontrol.Schoon; 
             paneel.Controls.Add(b);
-            
-            b = new Button(); 
-            b.Text = "Rotate"; 
-            b.Location = new Point( 80, 0); 
-            b.Click += schetscontrol.Roteer; 
+
+            b = new Button();
+            b.Text = "Rotate";
+            b.Location = new Point(80, 0);
+            b.Click += schetscontrol.Roteer;
+            paneel.Controls.Add(b);
+
+            b = new Button();
+            b.Text = "Undo";
+            b.Location = new Point(160, 0);
+            b.Click += schetscontrol.Terugdraaien;
             paneel.Controls.Add(b);
             
             l = new Label();  
             l.Text = "Penkleur:"; 
-            l.Location = new Point(180, 3); 
+            l.Location = new Point(240, 3); 
             l.AutoSize = true;               
             paneel.Controls.Add(l);
             
-            cbb = new ComboBox(); cbb.Location = new Point(240, 0); 
+            cbb = new ComboBox(); cbb.Location = new Point(300, 0); 
             cbb.DropDownStyle = ComboBoxStyle.DropDownList; 
             cbb.SelectedValueChanged += schetscontrol.VeranderKleur;
             foreach (string k in kleuren)

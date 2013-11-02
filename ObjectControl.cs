@@ -43,7 +43,8 @@ namespace SchetsEditor
 
         public void actieTerugdraaien()
         {
-            objecten.RemoveAt(objecten.Count-1);
+            if (objecten.Count > 0) 
+                objecten.RemoveAt(objecten.Count-1);
         }
     }
 

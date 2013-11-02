@@ -63,8 +63,13 @@ namespace SchetsEditor
             this.Invalidate();
         }
         public void Roteer(object o, EventArgs ea)
-        {   schets.Roteer();
+        {
+            schets.Roteer();
             this.veranderAfmeting(o, ea);
+        }
+        public void Terugdraaien(object o, EventArgs ea)
+        {
+            schets.Terugdraaien();
         }
         public void VeranderKleur(object obj, EventArgs ea)
         {   string kleurNaam = ((ComboBox)obj).Text;

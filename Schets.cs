@@ -104,5 +104,14 @@ namespace SchetsEditor
             // 2: Deze actie veroorzaakt een wijziging
             this.isBitmapGewijzigd = true;
         }
+        public void Terugdraaien()
+        {    
+            Graphics gr = Graphics.FromImage(bitmap);
+            gr.FillRectangle(Brushes.White, 0, 0, bitmap.Width, bitmap.Height);
+            objectmanager.actieTerugdraaien();
+            DrawFromXML.DrawingFromXML(gr, objectmanager.getObjects);
+            // 2: Deze actie veroorzaakt een wijziging
+            this.isBitmapGewijzigd = true;
+        }
     }
 }
