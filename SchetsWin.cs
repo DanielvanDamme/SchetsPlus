@@ -102,7 +102,7 @@ namespace SchetsEditor
                                  , "Yellow", "Magenta", "Cyan", "White"
                                  };
 
-            this.ClientSize = new Size(700, 500);
+            this.ClientSize = new Size(700, 512);
             huidigeTool = deTools[0];
 
 
