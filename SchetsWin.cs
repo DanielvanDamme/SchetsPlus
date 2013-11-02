@@ -50,17 +50,22 @@ namespace SchetsEditor
             bool succes = true;
 
             SaveFileDialog bestandOpslaan = new SaveFileDialog();
-            bestandOpslaan.Filter = "JPG file *.jpg|*.jpg|PNG file *.png|*.png|BMP file *.bmp|*.bmp";
+            bestandOpslaan.Filter = "JPG file *.jpg|*.jpg|PNG file *.png|*.png|BMP file *.bmp|*.bmp|SchetsPlus XML file *.xml|*.xml";
             bestandOpslaan.Title = "Afbeelding opslaan";
             if (bestandOpslaan.ShowDialog() == DialogResult.OK)
             {
-                Bitmap bmp = schetscontrol.GetBitmap;
-                ObjectManager objectmanager = schetscontrol.GetManager;
-
                 try
-                { 
-                    bmp.Save(bestandOpslaan.FileName);
-                    objectmanager.SerializeToXML();
+                {
+                    if (Path.GetExtension(bestandOpslaan.FileName) == ".xml")
+                    {
+                        ObjectManager objectmanager = schetscontrol.GetManager;
+                        objectmanager.SerializeToXML(bestandOpslaan.FileName);
+                    }
+                    else
+                    {
+                        Bitmap bmp = schetscontrol.GetBitmap;
+                        bmp.Save(bestandOpslaan.FileName);
+                    }
                 }
                 catch (Exception e)
                 {

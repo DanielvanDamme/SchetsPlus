@@ -15,10 +15,10 @@ namespace SchetsEditor
             get { return objects; }
         }
 
-        public void SerializeToXML()
+        public void SerializeToXML(string filename)
         {
             XmlSerializer serializer = new XmlSerializer(typeof(List<DrawObject>));
-            StreamWriter writer = new StreamWriter(@"temp.xml");
+            StreamWriter writer = new StreamWriter(filename);
             serializer.Serialize(writer, this.objects);
             writer.Close();
         }

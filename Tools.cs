@@ -24,14 +24,21 @@ namespace SchetsEditor
         protected Point startpunt;
         protected DrawObject obj;
         protected List<Point> points;
+        protected ObjectManager objectmanager = new ObjectManager();
 
         public virtual void MuisVast(SchetsControl s, Point p)
         {
+            objectmanager = s.GetManager;
             points = new List<Point>();
+            obj = new DrawObject();
             startpunt = p;
             kleur = Color.FromName((s.PenKleur).Name);
             kwast = new SolidBrush(kleur);
             pen = new Pen(kwast, 3);
+
+            objectmanager.assignObject(obj);
+            points.Add(p);
+            obj.Color = kleur.Name;
         }
 
         public virtual void MuisLos(SchetsControl s, Point p) { }
@@ -42,8 +49,15 @@ namespace SchetsEditor
     }
 
     public class TekstTool : StartpuntTool
-    {
+    {     
         public override string ToString() { return "tekst"; }
+
+        public override void MuisVast(SchetsControl s, Point p)
+        {
+            base.MuisVast(s, p);
+            obj.Tool = ToString();
+            obj.Points = points;
+        }
 
         public override void MuisDrag(SchetsControl s, Point p) { }
 
@@ -51,27 +65,12 @@ namespace SchetsEditor
         {
             if (c >= 32)
             {
-                points.Add(startpunt);
                 string tekst = c.ToString();
 
-                obj = new DrawObject();
+                obj.Text += tekst;
 
-                obj.Tool = ToString();
-                obj.Text = tekst;
-                obj.Points = points;
-                obj.Color = kleur.Name;
-
-                ObjectManager objectmanager = s.GetManager;
-                objectmanager.assignObject(obj);
-
-                Graphics gr = s.MaakBitmapGraphics();
-                Font font = new Font("Tahoma", 40);
-                SizeF sz = gr.MeasureString(tekst, font, this.startpunt, StringFormat.GenericTypographic);
                 s.Invalidate();
-                DrawFromXML.DrawingFromXML(gr, objectmanager.getObjects);
-                startpunt.X += (int)sz.Width;
-
-                points = new List<Point>();
+                DrawFromXML.DrawingFromXML(s.MaakBitmapGraphics(), objectmanager.getObjects);
             }
         }
     }
@@ -88,12 +87,7 @@ namespace SchetsEditor
         public override void MuisVast(SchetsControl s, Point p)
         {
             base.MuisVast(s, p);
-
-            points.Add(p);
-
-            obj = new DrawObject();
             obj.Tool = ToString();
-            obj.Color = kleur.Name;
         }
 
         public override void MuisDrag(SchetsControl s, Point p)
@@ -108,9 +102,6 @@ namespace SchetsEditor
 
             obj.Points = points;
 
-            ObjectManager objectmanager = s.GetManager;
-            objectmanager.assignObject(obj);
-            s.Refresh();
             s.Invalidate();
             DrawFromXML.DrawingFromXML(s.MaakBitmapGraphics(), objectmanager.getObjects);
         }
