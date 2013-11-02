@@ -40,6 +40,11 @@ namespace SchetsEditor
         {
             objecten.Add(tekenObject);
         }
+
+        public void actieTerugdraaien()
+        {
+            objecten.RemoveAt(objecten.Count-1);
+        }
     }
 
     public class DrawFromXML
