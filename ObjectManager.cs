@@ -47,16 +47,6 @@ namespace SchetsEditor
             {
                 Color color = Color.FromName(obj.Color);
                 SolidBrush brush = new SolidBrush(color);
-                Pen pen = new Pen(brush, 3);
-                Rectangle rect = new Rectangle();
-
-                if (obj.Tool == "kader" || obj.Tool == "vlak" || obj.Tool == "cirkel" || obj.Tool == "rondje")
-                {
-                    Point punt = new Point(Math.Min(obj.Points[0].X, obj.Points[1].X), Math.Min(obj.Points[0].Y, obj.Points[1].Y));
-                    Size grootte = new Size(Math.Abs(obj.Points[0].X - obj.Points[1].X), Math.Abs(obj.Points[0].Y - obj.Points[1].Y));
-                    rect = new Rectangle(punt, grootte);
-                }
-
 
                 switch (obj.Tool)
                 {
