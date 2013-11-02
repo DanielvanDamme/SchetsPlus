@@ -218,6 +218,6 @@ namespace SchetsEditor
     
     public class GumTool : PenTool
     {
-        // Oude Gummert
+        public override string ToString() { return "gum"; }
     }
 }
