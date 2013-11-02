@@ -65,11 +65,11 @@ namespace SchetsEditor
                 for (int i = 0; i < (obj.Tekst.Length - 1); i++)
                     res += obj.Tekst[i];
                 obj.Tekst = res;
+                s.MaakBitmapGraphics().FillRectangle(Brushes.White, 0, 0, s.GetBitmap.Width, s.GetBitmap.Height);
             }
             else if (c >= 32)
             { obj.Tekst += c.ToString(); }
 
-            s.MaakBitmapGraphics().FillRectangle(Brushes.White, 0, 0, s.GetBitmap.Width, s.GetBitmap.Height);
             s.Invalidate();
             DrawFromXML.DrawingFromXML(s.MaakBitmapGraphics(), objectmanager.getObjects);
         }
