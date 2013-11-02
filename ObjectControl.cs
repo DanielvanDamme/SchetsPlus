@@ -56,7 +56,7 @@ namespace SchetsEditor
                 switch (obj.Tool)
                 {
                     case "tekst":
-                        gr.DrawString(obj.Tekst, font, brush, obj.Points[0], StringFormat.GenericTypographic);
+                        gr.DrawString(obj.Tekst, font, brush, obj.Points[0], StringFormat.GenericDefault);
                         break;
                     case "kader":
                         new RechthoekTool().Teken(gr, obj.Points[0], obj.Points[1], brush);
