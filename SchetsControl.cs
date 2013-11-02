@@ -10,11 +10,11 @@ namespace SchetsEditor
         private Schets schets;
         private Color penkleur;
 
-        private ObjectManager objectmanager = new ObjectManager();
+        
 
         public ObjectManager GetManager
         {
-            get { return objectmanager; }
+            get { return schets.GetManager; }
         }
 
 

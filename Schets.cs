@@ -15,6 +15,13 @@ namespace SchetsEditor
         private bool isNieuwScherm = true;
         private Bitmap bitmap;
 
+        private ObjectManager objectmanager = new ObjectManager();
+
+        public ObjectManager GetManager
+        {
+            get { return objectmanager; }
+        }
+
         // 2: Property om de wijzigingsstatus op te vragen of door te geven
         public bool IsBitmapGewijzigd
         {   get { return isBitmapGewijzigd; }
@@ -47,7 +54,7 @@ namespace SchetsEditor
             {
                 if (Path.GetExtension(bestandsLocatie) == ".xml")
                 {
-                    //SchetsEditor.ObjectManager.DeserializeFromXML(bestandsLocatie);
+                    objectmanager.DeserializeFromXML(bestandsLocatie);
                 }
                 else
                 {
