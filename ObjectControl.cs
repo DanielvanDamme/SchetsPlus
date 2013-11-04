@@ -168,6 +168,7 @@ namespace SchetsEditor
     {
         public static void DrawingFromXML(Graphics gr, List<TekenObject> objects)
         {
+            gr.FillRectangle(Brushes.White, 0, 0, 1000, 1000);
             Font font = new Font("Tahoma", 40);
 
             foreach (TekenObject obj in objects)
