@@ -32,7 +32,7 @@ namespace SchetsEditor
             points = new List<Point>();
             objectmanager = s.GetManager;
 
-            objectmanager.objectToewijzen(obj);
+            objectmanager.Toewijzen(obj);
             points.Add(p);
             obj.Kleur = (s.PenKleur).Name;
         }
@@ -69,9 +69,8 @@ namespace SchetsEditor
             else if (c >= 32)
             { obj.Tekst += c.ToString(); }
 
-            s.MaakBitmapGraphics().FillRectangle(Brushes.White, 0, 0, s.GetBitmap.Width, s.GetBitmap.Height);
             s.Invalidate();
-            DrawFromXML.DrawingFromXML(s.MaakBitmapGraphics(), objectmanager.getObjects);
+            DrawFromXML.DrawingFromXML(s.MaakBitmapGraphics(), objectmanager.Ophalen);
         }
     }
 
@@ -112,7 +111,7 @@ namespace SchetsEditor
 
             
             s.Invalidate();
-            DrawFromXML.DrawingFromXML(s.MaakBitmapGraphics(), objectmanager.getObjects);
+            DrawFromXML.DrawingFromXML(s.MaakBitmapGraphics(), objectmanager.Ophalen);
         }
 
         public abstract void Teken(Graphics g, Point p1, Point p2);
@@ -229,7 +228,7 @@ namespace SchetsEditor
             ObjectControl objectmanager = s.GetManager;
             objectmanager.objectVerwijderen(p);
             s.MaakBitmapGraphics().FillRectangle(Brushes.White, 0, 0, s.GetBitmap.Width, s.GetBitmap.Height);
-            DrawFromXML.DrawingFromXML(s.MaakBitmapGraphics(), objectmanager.getObjects);
+            DrawFromXML.DrawingFromXML(s.MaakBitmapGraphics(), objectmanager.Ophalen);
             s.Invalidate();
         }
     }
