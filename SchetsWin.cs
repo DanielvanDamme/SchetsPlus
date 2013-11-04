@@ -59,8 +59,11 @@ namespace SchetsEditor
                 {
                     if (Path.GetExtension(bestandOpslaan.FileName) == ".xml")
                     {
-                        ObjectControl objectmanager = schetscontrol.GetController;
-                        objectmanager.SerializeToXML(bestandOpslaan.FileName);
+                        ObjectControl objectcontrol = schetscontrol.GetController;
+                        XmlSerializer serializer = new XmlSerializer(typeof(List<TekenObject>));
+                        StreamWriter writer = new StreamWriter(bestandOpslaan.FileName);
+                        serializer.Serialize(writer, objectcontrol.Ophalen);
+                        writer.Close();
                     }
                     else
                     {

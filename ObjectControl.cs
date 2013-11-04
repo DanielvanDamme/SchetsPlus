@@ -16,6 +16,11 @@ namespace SchetsEditor
             get { return tekenObjecten; }
         }
 
+        public List<TekenObject> Inladen
+        {
+            set { tekenObjecten = value; }
+        }
+
         public ObjectControl()
         {
             Reset();
@@ -61,22 +66,6 @@ namespace SchetsEditor
                     tekenObject.Points[0] = new Point(E, F);
                 }
             }
-        }
-
-        public void SerializeToXML(string bestandsnaam)
-        {
-            XmlSerializer serializer = new XmlSerializer(typeof(List<TekenObject>));
-            StreamWriter writer = new StreamWriter(bestandsnaam);
-            serializer.Serialize(writer, this.tekenObjecten);
-            writer.Close();
-        }
-
-        public void DeserializeFromXML(string bestandsnaam)
-        {
-            XmlSerializer deserializer = new XmlSerializer(typeof(List<TekenObject>));
-            TextReader textReader = new StreamReader(bestandsnaam);
-            this.tekenObjecten = (List<TekenObject>)deserializer.Deserialize(textReader);
-            textReader.Close();
         }
 
         public void Toewijzen(TekenObject tekenObject)

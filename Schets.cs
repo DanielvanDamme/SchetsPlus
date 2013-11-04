@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
+using System.Xml.Serialization;
+
 
 namespace SchetsEditor
 {
@@ -65,7 +67,10 @@ namespace SchetsEditor
             {
                 if (Path.GetExtension(bestandsLocatie) == ".xml")
                 {
-                    objectcontrol.DeserializeFromXML(bestandsLocatie);
+                    XmlSerializer deserializer = new XmlSerializer(typeof(List<TekenObject>));
+                    TextReader textReader = new StreamReader(bestandsLocatie);
+                    objectcontrol.Inladen = (List<TekenObject>)deserializer.Deserialize(textReader);
+                    textReader.Close();
                 }
                 else
                 {
