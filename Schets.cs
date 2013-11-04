@@ -24,7 +24,7 @@ namespace SchetsEditor
 
         private ObjectControl objectcontrol = new ObjectControl();
 
-        public ObjectControl GetManager
+        public ObjectControl GetController
         {
             get { return objectcontrol; }
         }

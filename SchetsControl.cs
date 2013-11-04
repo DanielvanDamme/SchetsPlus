@@ -12,9 +12,9 @@ namespace SchetsEditor
 
         
 
-        public ObjectControl GetManager
+        public ObjectControl GetController
         {
-            get { return schets.GetManager; }
+            get { return schets.GetController; }
         }
 
 
