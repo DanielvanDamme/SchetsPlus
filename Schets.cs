@@ -15,11 +15,11 @@ namespace SchetsEditor
         private bool isNieuwScherm = true;
         private Bitmap bitmap;
 
-        private ObjectControl objectmanager = new ObjectControl();
+        private ObjectControl objectcontrol = new ObjectControl();
 
         public ObjectControl GetManager
         {
-            get { return objectmanager; }
+            get { return objectcontrol; }
         }
 
         // 2: Property om de wijzigingsstatus op te vragen of door te geven
@@ -54,7 +54,7 @@ namespace SchetsEditor
             {
                 if (Path.GetExtension(bestandsLocatie) == ".xml")
                 {
-                    objectmanager.DeserializeFromXML(bestandsLocatie);
+                    objectcontrol.DeserializeFromXML(bestandsLocatie);
                 }
                 else
                 {
@@ -81,33 +81,33 @@ namespace SchetsEditor
         public void Teken(Graphics gr)
         {
             gr.DrawImage(bitmap, 0, 0);
-            // 2: Deze actie veroorzaakt een wijziging, tenzij het scherm net geopend is
+
             if (isNieuwScherm)
             {
                 this.isBitmapGewijzigd = false;
                 isNieuwScherm = false;
             }
             else
+            {
                 this.isBitmapGewijzigd = true;
+            }
         }
         public void Schoon()
         {
-            Graphics gr = Graphics.FromImage(bitmap);
-            objectmanager.Reset();
-            DrawFromXML.DrawingFromXML(gr, objectmanager.Ophalen);
+            objectcontrol.Reset();
+            DrawFromXML.DrawingFromXML(Graphics.FromImage(bitmap), objectcontrol.Ophalen);
             this.isBitmapGewijzigd = true;
         }
         public void Roteer()
         {
-            bitmap.RotateFlip(RotateFlipType.Rotate90FlipNone);
-            // 2: Deze actie veroorzaakt een wijziging
+            objectcontrol.Roteer(bitmap.Width, bitmap.Height);
+            DrawFromXML.DrawingFromXML(Graphics.FromImage(bitmap), objectcontrol.Ophalen);
             this.isBitmapGewijzigd = true;
         }
         public void Terugdraaien()
         {    
-            Graphics gr = Graphics.FromImage(bitmap);
-            objectmanager.Terugdraaien();
-            DrawFromXML.DrawingFromXML(gr, objectmanager.Ophalen);
+            objectcontrol.Terugdraaien();
+            DrawFromXML.DrawingFromXML(Graphics.FromImage(bitmap), objectcontrol.Ophalen);
             this.isBitmapGewijzigd = true;
         }
     }
