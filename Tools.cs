@@ -219,8 +219,8 @@ namespace SchetsEditor
         public void MuisVast(SchetsControl s, Point p)
         {
             ObjectControl objectmanager = s.GetManager;
-            objectmanager.verwijderBovensteObjectOpPunt(p);
-           Schets.Teken(s.MaakBitmapGraphics(), objectmanager.Ophalen);
+            objectmanager.VerwijderBovensteObjectOpPunt(p);
+            Schets.Teken(s.MaakBitmapGraphics(), objectmanager.Ophalen);
             s.Invalidate();
         }
     }

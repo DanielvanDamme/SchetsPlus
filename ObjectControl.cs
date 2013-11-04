@@ -49,9 +49,23 @@ namespace SchetsEditor
                 if (tekenObject.Tool == "tekst")
                 {
                     tekenObject.Hoek = (tekenObject.Hoek == 270) ? 0 : tekenObject.Hoek + 90;
+
+                    Graphics g = Graphics.FromImage(new Bitmap(1, 1));
+                    SizeF sz = g.MeasureString(tekenObject.Tekst, new Font("Tahoma", 40));
+
+                    int E = tekenObject.Points[0].X;
+                    int F = tekenObject.Points[0].Y;
+
+                    if (tekenObject.Hoek == 0 || tekenObject.Hoek == 180)
+                        E -= (int)sz.Width;
+                    else if (tekenObject.Hoek == 90 || tekenObject.Hoek == 270)
+                        E -= (int)sz.Height;
+
+                    tekenObject.Points[0] = new Point(E, F);
                 }
             }
         }
+
 
         public void SerializeToXML(string bestandsnaam)
         {
@@ -80,7 +94,8 @@ namespace SchetsEditor
                 tekenObjecten.RemoveAt(tekenObjecten.Count - 1);
         }
 
-        public void verwijderBovensteObjectOpPunt(Point p)
+        // Ga vanaf boven naar onder voor alle TekenObjecten na of er raak op is geklikt en verwijder het object dan
+        public void VerwijderBovensteObjectOpPunt(Point p)
         {
             for (int i = (tekenObjecten.Count - 1); i >= 0; i--)
             {
@@ -92,6 +107,7 @@ namespace SchetsEditor
             }
         }
 
+        // isRaak roept de juiste methode aan voor het betreffende TekenObject om te controleren of er op is geklikt
         private static bool isRaak(TekenObject obj, Point p)
         {
             switch (obj.Tool)
@@ -103,9 +119,9 @@ namespace SchetsEditor
                 case "vlak":
                     return isBinnenVierkant(obj, p, 0);
                 case "cirkel":
-                    return isEclipseRaakGeklikt(obj, p, false);
+                    return isEllipsRaakGeklikt(obj, p, false);
                 case "rondje":
-                    return isEclipseRaakGeklikt(obj, p, true);
+                    return isEllipsRaakGeklikt(obj, p, true);
                 case "lijn":
                     return isOpLijnGeklikt(obj, p);
                 case "pen":
@@ -114,6 +130,7 @@ namespace SchetsEditor
             return false;
         }
 
+        // Bepaalt of punt p op de tekst ligt
         private static bool isOpTekstGeklikt(TekenObject obj, Point p)
         {
             Bitmap tijdelijk = new Bitmap(1,1);
@@ -152,37 +169,36 @@ namespace SchetsEditor
         // Laat weten of er op de rand van de rechthoek geklikt is, het kader wordt aan weerskanten vergroot met de helft van de dikte van de gumrand
         private static bool isOpKaderGeklikt(TekenObject obj, Point p)
         {
-            return (!isBinnenVierkant(obj, p, GumRandDikte / 2) && isBinnenVierkant(obj, p, -(GumRandDikte / 2)));
+            return (!isBinnenVierkant(obj, p, GumRandDikte) && isBinnenVierkant(obj, p, -GumRandDikte));
         }
 
         // Bepaalt of punt p binnen of op de lijn van de cirkel ligt afhankelijk van de waarde van de boolean isGevuldeCirkel
-        private static bool isEclipseRaakGeklikt(TekenObject obj, Point p, bool isGevuldeCirkel)
+        private static bool isEllipsRaakGeklikt(TekenObject obj, Point p, bool isGevuldeEllips)
         {
             Point begin = new Point(Math.Min(obj.Points[0].X, obj.Points[1].X), Math.Min(obj.Points[0].Y, obj.Points[1].Y));
             Point eind = new Point(Math.Max(obj.Points[0].X, obj.Points[1].X), Math.Max(obj.Points[0].Y, obj.Points[1].Y));
             double radiusx = Math.Abs((double)eind.X - (double)begin.X) / 2.0;
             double radiusy = Math.Abs((double)eind.Y - (double)begin.Y) / 2.0;
-            double middelpuntx = begin.X + radiusx;
-            double middelpunty = begin.Y + radiusy;
+            Point middelpunt = new Point(begin.X + (int)radiusx, begin.Y + (int)radiusy);
 
-            if (isGevuldeCirkel)
-                return isPuntBinnenCirkel(p, radiusx, radiusy, middelpuntx, middelpunty);
+            if (isGevuldeEllips)
+                return isPuntBinnenCirkel(p, radiusx, radiusy, middelpunt);
             else
-                return isPuntOpRand(p, radiusx, radiusy, middelpuntx, middelpunty);
+                return isPuntOpRand(p, radiusx, radiusy, middelpunt);
         }
 
         // Laat weten of er op de rand van de ellips geklikt is, de ellips wordt aan weerskanten vergroot met de helft van de dikte van de gumrand
         // Maakt gebruik van de stelling van pythagoras om de afstand te berekenen t.o.v. het middelpunt
-        private static bool isPuntOpRand(Point p, double radiusx, double radiusy, double middelpuntx, double middelpunty)
+        private static bool isPuntOpRand(Point p, double radiusx, double radiusy, Point middelpunt)
         {
-            return (Math.Sqrt(Math.Pow((p.X - middelpuntx) / (radiusx - GumRandDikte), 2) + Math.Pow((p.Y - middelpunty) / (radiusy - GumRandDikte), 2)) >= 1 
-                && isPuntBinnenCirkel(p, radiusx, radiusy, middelpuntx, middelpunty));
+            return (Math.Sqrt(Math.Pow((p.X - middelpunt.X) / (radiusx - GumRandDikte), 2) + Math.Pow((p.Y - middelpunt.Y) / (radiusy - GumRandDikte), 2)) >= 1
+                && isPuntBinnenCirkel(p, radiusx + GumRandDikte, radiusy + GumRandDikte, middelpunt));
         }
 
-        // 
-        private static bool isPuntBinnenCirkel(Point p, double radiusx, double radiusy, double middelpuntx, double middelpunty)
+        // Deze functie bepaalt of het punt binnen de cirkel ligt
+        private static bool isPuntBinnenCirkel(Point p, double radiusx, double radiusy, Point middelpunt)
         {
-            return (Math.Sqrt(Math.Pow((p.X - middelpuntx) / radiusx, 2) + Math.Pow((p.Y - middelpunty) / radiusy, 2)) <= 1);
+            return (Math.Sqrt(Math.Pow((p.X - middelpunt.X) / radiusx, 2) + Math.Pow((p.Y - middelpunt.Y) / radiusy, 2)) <= 1);
         }
 
         // Deze methode is afgeleid van http://en.wikipedia.org/wiki/Distance_from_a_point_to_a_line
@@ -224,6 +240,7 @@ namespace SchetsEditor
     {
         private static Font font = new Font("Tahoma", 40);
 
+        // De eigenschap font omdat deze buiten deze klasse nodig is
         public static Font Lettertype
         {
             get { return font; }

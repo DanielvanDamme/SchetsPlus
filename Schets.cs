@@ -24,15 +24,18 @@ namespace SchetsEditor
 
         // 2: Property om de wijzigingsstatus op te vragen of door te geven
         public bool IsBitmapGewijzigd
-        {   get { return isBitmapGewijzigd; }
+        {
+            get { return isBitmapGewijzigd; }
             set { isBitmapGewijzigd = value; }
         }
         // 2: Property to get the drawing
         public Bitmap GetBitmap
-        {   get { return bitmap; }
+        {
+            get { return bitmap; }
         }
         public Graphics BitmapGraphics
-        {   get { return Graphics.FromImage(bitmap); }
+        {
+            get { return Graphics.FromImage(bitmap); }
         }
 
         // 2: Constructor geschikt gemaakt om een bestand te kunnen openen
@@ -43,10 +46,11 @@ namespace SchetsEditor
         }
 
         // 2: Constructor overloading
-        public Schets() : this("")
+        public Schets()
+            : this("")
         {
         }
-        
+
         // 2: Bestand openen functie
         private void openBestand(string bestandsLocatie)
         {
@@ -67,7 +71,7 @@ namespace SchetsEditor
         {
             if (sz.Width > bitmap.Size.Width || sz.Height > bitmap.Size.Height)
             {
-                Bitmap nieuw = new Bitmap( Math.Max(sz.Width,  bitmap.Size.Width)
+                Bitmap nieuw = new Bitmap(Math.Max(sz.Width, bitmap.Size.Width)
                                          , Math.Max(sz.Height, bitmap.Size.Height)
                                          );
                 Graphics gr = Graphics.FromImage(nieuw);
@@ -105,7 +109,7 @@ namespace SchetsEditor
             this.isBitmapGewijzigd = true;
         }
         public void Terugdraaien()
-        {    
+        {
             objectcontrol.Terugdraaien();
             Teken(Graphics.FromImage(bitmap), objectcontrol.Ophalen);
             this.isBitmapGewijzigd = true;
@@ -128,24 +132,12 @@ namespace SchetsEditor
                         Graphics gOff = Graphics.FromImage(tekstBmp);
                         gOff.DrawString(obj.Tekst, font, brush, new Point(0, 0), StringFormat.GenericDefault);
                         if (obj.Hoek == 90)
-                        {
                             tekstBmp.RotateFlip(RotateFlipType.Rotate90FlipNone);
-                            gr.DrawImage(tekstBmp, obj.Points[0].X - (int)sz.Height, obj.Points[0].Y);
-                        }
                         else if (obj.Hoek == 180)
-                        {
                             tekstBmp.RotateFlip(RotateFlipType.Rotate180FlipNone);
-                            gr.DrawImage(tekstBmp, obj.Points[0].X - (int)sz.Width, obj.Points[0].Y - (int)sz.Height);
-                        }
                         else if (obj.Hoek == 270)
-                        {
                             tekstBmp.RotateFlip(RotateFlipType.Rotate270FlipNone);
-                            gr.DrawImage(tekstBmp, obj.Points[0].X, obj.Points[0].Y - (int)sz.Width);
-                        }
-                        else
-                        {
-                            gr.DrawImage(tekstBmp, obj.Points[0]);
-                        }
+                        gr.DrawImage(tekstBmp, obj.Points[0]);
                         break;
                     case "kader":
                         new RechthoekTool().Teken(gr, obj.Points[0], obj.Points[1], brush);
