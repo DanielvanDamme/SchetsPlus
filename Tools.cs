@@ -34,6 +34,7 @@ namespace SchetsEditor
 
             objectcontrol.Toewijzen(tekenObject);
             tekenObject.Points.Add(p);
+            tekenObject.Points.Add(p);
             tekenObject.Kleur = (s.PenKleur).Name;
         }
 
@@ -98,12 +99,13 @@ namespace SchetsEditor
         public override void MuisDrag(SchetsControl s, Point p)
         {
             s.Refresh();
+            tekenObject.Points[1] = p;
             this.Teken(s.CreateGraphics(), this.startpunt, p);
         }
 
         public override void MuisLos(SchetsControl s, Point p)
         {
-            tekenObject.Points.Add(p);
+            //tekenObject.Points.Add(p);
             s.Invalidate();
         }
 
