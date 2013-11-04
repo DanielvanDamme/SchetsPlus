@@ -9,12 +9,7 @@ namespace SchetsEditor
     public class ObjectControl
     {
         private List<TekenObject> tekenObjecten = new List<TekenObject>();
-        const int GumRandDikte = 8;
-
-        public ObjectControl()
-        {
-            Reset();
-        }
+        private const int GumRandDikte = 8;
 
         public List<TekenObject> Ophalen
         {
@@ -22,6 +17,11 @@ namespace SchetsEditor
             {
                 return tekenObjecten;
             }
+        }
+
+        public ObjectControl()
+        {
+            Reset();
         }
 
         public void Reset()
@@ -74,6 +74,12 @@ namespace SchetsEditor
             tekenObjecten.Add(tekenObject);
         }
 
+        public void Terugdraaien()
+        {
+            if (tekenObjecten.Count > 0)
+                tekenObjecten.RemoveAt(tekenObjecten.Count - 1);
+        }
+
         public void verwijderBovensteObjectOpPunt(Point p)
         {
             for (int i = (tekenObjecten.Count - 1); i >= 0; i--)
@@ -94,7 +100,7 @@ namespace SchetsEditor
 
                     return true;
                 case "kader":
-                    return isKaderRaakGeklikt(obj, p);
+                    return isOpKaderGeklikt(obj, p);
                 case "vlak":
                     return isBinnenVierkant(obj, p, 0);
                 case "cirkel":
@@ -113,15 +119,15 @@ namespace SchetsEditor
         {
             for (int i = 1; i < obj.Points.Count; i++)
             {
-                if (afstandTotLijn(obj.Points[i - 1], obj.Points[i], p) < GumRandDikte)
+                if (afstandVanPuntTotLijn(obj.Points[i - 1], obj.Points[i], p) < GumRandDikte)
                     return true;
             }
             return false;
         }
 
-
         // Deze methode is afgeleid van http://en.wikipedia.org/wiki/Distance_from_a_point_to_a_line
-        private static double afstandTotLijn(Point begin, Point eind, Point p)
+        // en berekent de kortste afstand vanaf punt p tot aan de lijn die loop vanaf het punt begin tot het punt eind
+        private static double afstandVanPuntTotLijn(Point begin, Point eind, Point p)
         {
             double xx, yy;
 
@@ -153,41 +159,26 @@ namespace SchetsEditor
             return Math.Sqrt(Math.Pow(p.X - xx, 2) + Math.Pow(p.Y - yy, 2));
         }
 
+        // Deze methode bepaalt of het punt p binnen de geaccepteerde marge t.o.v. het lijnstuk ligt
         private static bool isOpLijnGeklikt(TekenObject obj, Point p)
         {
-            return (afstandTotLijn(obj.Points[0], obj.Points[1], p) < GumRandDikte);
+            return (afstandVanPuntTotLijn(obj.Points[0], obj.Points[1], p) < GumRandDikte);
         }
 
+        // Bepaalt of het punt binnen het object ligt en geeft de mogelijkheid om de grootte van de rechthoek aan te passen
         private static bool isBinnenVierkant(TekenObject obj, Point p, int aanpassing)
         {
             return (p.X > obj.Points[0].X + aanpassing && p.X < obj.Points[1].X - aanpassing && 
                     p.Y > obj.Points[0].Y + aanpassing && p.Y < obj.Points[1].Y - aanpassing);
         }
 
-        private static bool isKaderRaakGeklikt(TekenObject obj, Point p)
+        // Laat weten of er op de rand van de rechthoek geklikt is, het kader wordt aan weerskanten vergroot met de helft van de dikte van de gumrand
+        private static bool isOpKaderGeklikt(TekenObject obj, Point p)
         {
-            return (!isBinnenVierkant(obj, p, GumRandDikte) && isBinnenVierkant(obj, p, 0));
+            return (!isBinnenVierkant(obj, p, GumRandDikte / 2) && isBinnenVierkant(obj, p, -(GumRandDikte / 2)));
         }
 
-        private static bool isEclipseRaakGeklikt(TekenObject obj, Point p, bool vollecirkel)
-        {
-            Point p1 = new Point(Math.Min(obj.Points[0].X, obj.Points[1].X), Math.Min(obj.Points[0].Y, obj.Points[1].Y));
-            Point p2 = new Point(Math.Max(obj.Points[0].X, obj.Points[1].X), Math.Max(obj.Points[0].Y, obj.Points[1].Y));
-            double radiusx = Math.Abs((double)p2.X - (double)p1.X) / 2.0;
-            double radiusy = Math.Abs((double)p2.Y - (double)p1.Y) / 2.0;
-            double middelpuntx = p1.X + radiusx;
-            double middelpunty = p1.Y + radiusy;
-
-            if (vollecirkel)
-            {
-                return isPuntBinnenCirkel(p, radiusx, radiusy, middelpuntx, middelpunty);
-            }
-            else
-            {
-                return isPuntOpRand(p, radiusx, radiusy, middelpuntx, middelpunty);
-            }
-        }
-
+        // 
         private static bool isPuntOpRand(Point p, double radiusx, double radiusy, double middelpuntx, double middelpunty)
         {
             return (Math.Sqrt(Math.Pow((p.X - middelpuntx) / (radiusx - GumRandDikte), 2) + Math.Pow((p.Y - middelpunty) / (radiusy - GumRandDikte), 2)) >= 1 
@@ -199,10 +190,24 @@ namespace SchetsEditor
             return (Math.Sqrt(Math.Pow((p.X - middelpuntx) / radiusx, 2) + Math.Pow((p.Y - middelpunty) / radiusy, 2)) <= 1);
         }
 
-        public void Terugdraaien()
+        // Bepaalt of punt p binnen of op de lijn van de cirkel ligt afhankelijk van de waarde van de boolean isGevuldeCirkel
+        private static bool isEclipseRaakGeklikt(TekenObject obj, Point p, bool isGevuldeCirkel)
         {
-            if (tekenObjecten.Count > 0)
-                tekenObjecten.RemoveAt(tekenObjecten.Count - 1);
+            Point begin = new Point(Math.Min(obj.Points[0].X, obj.Points[1].X), Math.Min(obj.Points[0].Y, obj.Points[1].Y));
+            Point eind = new Point(Math.Max(obj.Points[0].X, obj.Points[1].X), Math.Max(obj.Points[0].Y, obj.Points[1].Y));
+            double radiusx = Math.Abs((double)eind.X - (double)begin.X) / 2.0;
+            double radiusy = Math.Abs((double)eind.Y - (double)begin.Y) / 2.0;
+            double middelpuntx = begin.X + radiusx;
+            double middelpunty = begin.Y + radiusy;
+
+            if (isGevuldeCirkel)
+            {
+                return isPuntBinnenCirkel(p, radiusx, radiusy, middelpuntx, middelpunty);
+            }
+            else
+            {
+                return isPuntOpRand(p, radiusx, radiusy, middelpuntx, middelpunty);
+            }
         }
     }
 
