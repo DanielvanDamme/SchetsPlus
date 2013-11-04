@@ -9,6 +9,9 @@ namespace SchetsEditor
 {
     public class TekenObject
     {
+        public TekenObject()
+        { Points = new List<Point>(); }
+
         public string Tool
         { get; set; }
 
