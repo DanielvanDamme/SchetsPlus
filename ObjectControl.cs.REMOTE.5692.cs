@@ -8,7 +8,7 @@ namespace SchetsEditor
 {
     public class ObjectControl
     {
-        private List<TekenObject> tekenObjecten = new List<TekenObject>();
+        private List<TekenObject> tekenObjecten;
 
         public ObjectControl()
         {
@@ -17,9 +17,9 @@ namespace SchetsEditor
 
         public List<TekenObject> Ophalen
         {
-            get
-            {
-                return tekenObjecten;
+            get 
+            { 
+                return tekenObjecten; 
             }
         }
 
@@ -28,6 +28,18 @@ namespace SchetsEditor
             tekenObjecten = new List<TekenObject>();
         }
 
+        public void Terugdraaien()
+        {
+            if (tekenObjecten.Count > 0)
+                tekenObjecten.RemoveAt(tekenObjecten.Count - 1);
+        }
+
+        public void Toewijzen(TekenObject tekenObject)
+        {
+            tekenObjecten.Add(tekenObject);
+        }
+
+        // Verplaats Serialize en Deserialize naar opslaan
         public void SerializeToXML(string bestandsnaam)
         {
             XmlSerializer serializer = new XmlSerializer(typeof(List<TekenObject>));
@@ -43,24 +55,14 @@ namespace SchetsEditor
             this.tekenObjecten = (List<TekenObject>)deserializer.Deserialize(textReader);
             textReader.Close();
         }
-
-        public void Toewijzen(TekenObject tekenObject)
-        {
-            tekenObjecten.Add(tekenObject);
-        }
-
+        
         public void objectVerwijderen(Point p)
         {
             for (int i = (tekenObjecten.Count - 1); i >= 0; i--)
             {
-                if (isRaak(tekenObjecten[i], p))
-                {
+                if (isRaak(objecten[i], p))
                     tekenObjecten.RemoveAt(i);
-                    break;
-                }
             }
-        }
-
         private bool isRaak(TekenObject obj, Point p)
         {
             switch (obj.Tool)
@@ -129,13 +131,9 @@ namespace SchetsEditor
 
 
 
+        
+        
 
-
-
-        public void Terugdraaien()
-        {
-            if (tekenObjecten.Count > 0)
-                tekenObjecten.RemoveAt(tekenObjecten.Count - 1);
         }
     }
 
@@ -143,6 +141,8 @@ namespace SchetsEditor
     {
         public static void DrawingFromXML(Graphics gr, List<TekenObject> objects)
         {
+            gr.FillRectangle(Brushes.White, 0, 0, 1000, 1000);
+
             Font font = new Font("Tahoma", 40);
 
             foreach (TekenObject obj in objects)
