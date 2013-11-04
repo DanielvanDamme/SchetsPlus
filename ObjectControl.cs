@@ -99,44 +99,34 @@ namespace SchetsEditor
         // Deze methode is afgeleid van http://en.wikipedia.org/wiki/Distance_from_a_point_to_a_line
         private static double afstandTotLijn(Point begin, Point eind, Point p)
         {
-            Point nabijPunt;
-            int dx = eind.X - begin.X;
-            int dy = eind.Y - begin.Y;
+            double xx, yy;
 
-            if ((dx == 0) && (dy == 0))
-            {
-                // It's a point not a line segment.
-                nabijPunt = begin;
-                dx = p.X - begin.X;
-                dy = p.Y - begin.Y;
-                return Math.Sqrt(dx * dx + dy * dy);
-            }
+            double dx = eind.X - begin.X;
+            double dy = eind.Y - begin.Y;
 
+            double res = ((p.X - begin.X) * dx + (p.Y - begin.Y) * dy) / (dx * dx + dy * dy);
 
-            float res = ((p.X - begin.X) * dx + (p.Y - begin.Y) * dy) / (dx * dx + dy * dy);
-
+            // Bepaal welk punt op de lijn(begin, eind) het dichtsbij het geklikte punt p ligt
+            // Als het resultaat kleiner is dan 0, dan ligt het beginpunt van de lijn het dichtste bij punt p
             if (res < 0)
             {
-                nabijPunt = begin;
-                dx = p.X - begin.X;
-                dy = p.Y - begin.Y;
+                xx = begin.X;
+                yy = begin.Y;
             }
+            // Als het resultaat groter is dan 1, dan ligt het eindpunt van de lijn het dichtste bij punt p
             else if (res > 1)
             {
-                nabijPunt = eind;
-                dx = p.X - eind.X;
-                dy = p.Y - eind.Y;
+                xx = eind.X;
+                yy = eind.Y;
             }
+            // Anders is het een punt op de lijn het dichtste bij
             else
             {
-                nabijPunt = new Point((int)(begin.X + res * dx), (int)(begin.Y + res * dy));
-                dx = p.X - nabijPunt.X;
-                dy = p.Y - nabijPunt.Y;
+                xx = begin.X + res * dx;
+                yy = begin.Y + res * dy;
             }
 
-            return Math.Sqrt(dx * dx + dy * dy);
-            //return Math.Abs((begin.Y - p.Y) * dx - (begin.X - p.X) * dy) /
-            //       Math.Sqrt(dx * dx + dy * dy);
+            return Math.Sqrt(Math.Pow(p.X - xx, 2) + Math.Pow(p.Y - yy, 2));
         }
 
         private static bool isOpLijnGeklikt(TekenObject obj, Point p)
