@@ -97,8 +97,7 @@ namespace SchetsEditor
             switch (obj.Tool)
             {
                 case "tekst":
-
-                    return true;
+                    return isOpTekstGeklikt(obj, p);
                 case "kader":
                     return isOpKaderGeklikt(obj, p);
                 case "vlak":
@@ -115,6 +114,18 @@ namespace SchetsEditor
             return false;
         }
 
+        private static bool isOpTekstGeklikt(TekenObject obj, Point p)
+        {
+            Bitmap tijdelijk = new Bitmap(1,1);
+            Graphics g = Graphics.FromImage(tijdelijk);
+            SizeF sz = g.MeasureString(obj.Tekst, DrawFromXML.Lettertype);
+            Point begin = obj.Points[0];
+            if (p.X > begin.X && p.X < begin.X + sz.Width && p.Y > begin.Y && p.Y < begin.Y + sz.Height)
+                return true;
+            return false;
+        }
+
+        // Check of punt p in de buurt ligt van alle streepjes die behoren tot dit TekenObject van het type Pen
         private static bool isOpPenGeklikt(TekenObject obj, Point p)
         {
             for (int i = 1; i < obj.Points.Count; i++)
@@ -211,10 +222,16 @@ namespace SchetsEditor
 
     public class DrawFromXML
     {
+        private static Font font = new Font("Tahoma", 40);
+
+        public static Font Lettertype
+        {
+            get { return font; }
+        }
+
         public static void DrawingFromXML(Graphics gr, List<TekenObject> objects)
         {
             gr.FillRectangle(Brushes.White, 0, 0, 1000, 1000);
-            Font font = new Font("Tahoma", 40);
 
             foreach (TekenObject obj in objects)
             {
