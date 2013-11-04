@@ -9,7 +9,10 @@ namespace SchetsEditor
     public class TekenObject
     {
         public TekenObject()
-        { Tekst = null; }
+        { 
+            Tekst = null;
+            Points = new List<Point>();
+        }
 
         public string Tool
         { get; set; }

@@ -21,7 +21,7 @@ namespace SchetsEditor
         protected Brush kwast;
         protected Point startpunt;
         protected TekenObject tekenObject;
-        protected List<Point> points;
+        //protected List<Point> points;
         protected ObjectControl objectcontrol;
 
         public virtual void MuisVast(SchetsControl s, Point p)
@@ -29,11 +29,11 @@ namespace SchetsEditor
             kwast = new SolidBrush(s.PenKleur);
             startpunt = p;
             tekenObject = new TekenObject();
-            points = new List<Point>();
+            //points = new List<Point>();
             objectcontrol = s.GetManager;
 
             objectcontrol.Toewijzen(tekenObject);
-            points.Add(p);
+            tekenObject.Points.Add(p);
             tekenObject.Kleur = (s.PenKleur).Name;
         }
 
@@ -52,7 +52,6 @@ namespace SchetsEditor
         {
             base.MuisVast(s, p);
             tekenObject.Tool = ToString();
-            tekenObject.Points = points;
         }
 
         public override void MuisDrag(SchetsControl s, Point p) { }
@@ -104,10 +103,7 @@ namespace SchetsEditor
 
         public override void MuisLos(SchetsControl s, Point p)
         {
-            points.Add(p);
-
-            tekenObject.Points = points;
-            
+            tekenObject.Points.Add(p);
             s.Invalidate();
         }
 
@@ -201,8 +197,8 @@ namespace SchetsEditor
 
         public override void MuisDrag(SchetsControl s, Point p)
         {
-            points.Add(p);
-            TekenLijn(s.CreateGraphics(), points, kwast);
+            tekenObject.Points.Add(p);
+            TekenLijn(s.CreateGraphics(), tekenObject.Points, kwast);
         }
 
         public void TekenLijn(Graphics g, List<Point> points, Brush kwast)
