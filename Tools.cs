@@ -226,7 +226,7 @@ namespace SchetsEditor
         public void MuisVast(SchetsControl s, Point p)
         {
             ObjectControl objectmanager = s.GetManager;
-            objectmanager.objectVerwijderen(p);
+            objectmanager.verwijderBovensteObjectOpPunt(p);
             s.MaakBitmapGraphics().FillRectangle(Brushes.White, 0, 0, s.GetBitmap.Width, s.GetBitmap.Height);
             DrawFromXML.DrawingFromXML(s.MaakBitmapGraphics(), objectmanager.Ophalen);
             s.Invalidate();

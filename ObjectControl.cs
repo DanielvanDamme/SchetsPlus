@@ -9,6 +9,7 @@ namespace SchetsEditor
     public class ObjectControl
     {
         private List<TekenObject> tekenObjecten = new List<TekenObject>();
+        const int RandDikte = 3;
 
         public ObjectControl()
         {
@@ -49,7 +50,7 @@ namespace SchetsEditor
             tekenObjecten.Add(tekenObject);
         }
 
-        public void objectVerwijderen(Point p)
+        public void verwijderBovensteObjectOpPunt(Point p)
         {
             for (int i = (tekenObjecten.Count - 1); i >= 0; i--)
             {
@@ -61,7 +62,7 @@ namespace SchetsEditor
             }
         }
 
-        private bool isRaak(TekenObject obj, Point p)
+        private static bool isRaak(TekenObject obj, Point p)
         {
             switch (obj.Tool)
             {
@@ -69,20 +70,15 @@ namespace SchetsEditor
 
                     return true;
                 case "kader":
-
-                    return true;
+                    return isKaderRaakGeklikt(obj, p);
                 case "vlak":
-                    if (p.X > obj.Points[0].X && p.X < obj.Points[1].X && p.Y > obj.Points[0].Y && p.Y < obj.Points[1].Y)
-                        return true;
-                    break;
+                    return isBinnenVierkant(obj, p, 0);
                 case "cirkel":
-                    return eclipseRaak(obj, p, false);
+                    return isEclipseRaakGeklikt(obj, p, false);
                 case "rondje":
-                    return eclipseRaak(obj, p, true);
-                    break;
+                    return isEclipseRaakGeklikt(obj, p, true);
                 case "lijn":
-
-                    return true;
+                    return isOpLijnGeklikt(obj, p);
                 case "pen":
 
                     return true;
@@ -90,7 +86,48 @@ namespace SchetsEditor
             return false;
         }
 
-        private bool eclipseRaak(TekenObject obj, Point p, bool vollecirkel)
+        // Deze methode is afkomstig van
+        // http://en.wikipedia.org/wiki/Distance_from_a_point_to_a_line
+        private static bool isOpLijnGeklikt(TekenObject obj, Point p)
+        {
+            Point begin = obj.Points[0];
+            Point eind = obj.Points[1];
+            int dx = eind.X - begin.X;
+            int dy = eind.Y - begin.Y;
+
+            // y = ax + b
+            // a is de richtingscoefficient van de lijn (delta Y / delta X)
+            int a = dy / dx;
+
+            // om b te berekenen gebruiken we: b = y - ax
+            int b = begin.Y - a * begin.X;
+
+            double res = ((p.X - begin.X) * dx + (p.Y - begin.Y) * dy / (dx * dx + dy * dy));
+
+            if (res > 1)
+                res = 1;
+            else if (res < 0)
+                res = 0;
+
+
+
+            double num = Math.Abs(p.Y - a * p.X - b);
+            double denum = Math.Sqrt(a * a + 1);
+            return (num / denum < 3);
+        }
+
+        private static bool isBinnenVierkant(TekenObject obj, Point p, int aanpassing)
+        {
+            return (p.X > obj.Points[0].X + aanpassing && p.X < obj.Points[1].X - aanpassing && 
+                    p.Y > obj.Points[0].Y + aanpassing && p.Y < obj.Points[1].Y - aanpassing);
+        }
+
+        private static bool isKaderRaakGeklikt(TekenObject obj, Point p)
+        {
+            return (!isBinnenVierkant(obj, p, RandDikte) && isBinnenVierkant(obj, p, 0));
+        }
+
+        private static bool isEclipseRaakGeklikt(TekenObject obj, Point p, bool vollecirkel)
         {
             Point p1 = new Point(Math.Min(obj.Points[0].X, obj.Points[1].X), Math.Min(obj.Points[0].Y, obj.Points[1].Y));
             Point p2 = new Point(Math.Max(obj.Points[0].X, obj.Points[1].X), Math.Max(obj.Points[0].Y, obj.Points[1].Y));
@@ -101,36 +138,24 @@ namespace SchetsEditor
 
             if (vollecirkel)
             {
-                return helecirkel(p, radiusx, radiusy, middelpuntx, middelpunty);
+                return isPuntBinnenCirkel(p, radiusx, radiusy, middelpuntx, middelpunty);
             }
             else
             {
-                return cirkelrand(p, radiusx, radiusy, middelpuntx, middelpunty);
+                return isPuntOpRand(p, radiusx, radiusy, middelpuntx, middelpunty);
             }
         }
 
-        private bool cirkelrand(Point p, double radiusx, double radiusy, double middelpuntx, double middelpunty)
+        private static bool isPuntOpRand(Point p, double radiusx, double radiusy, double middelpuntx, double middelpunty)
         {
-            const int PenSize = 3;
-            if (Math.Sqrt(Math.Pow((p.X - middelpuntx) / (radiusx - PenSize), 2) + Math.Pow((p.Y - middelpunty) / (radiusy - PenSize), 2)) >= 1 &&
-                helecirkel(p, radiusx, radiusy, middelpuntx, middelpunty))
-                return true;
-            else
-                return false;
+            return (Math.Sqrt(Math.Pow((p.X - middelpuntx) / (radiusx - RandDikte), 2) + Math.Pow((p.Y - middelpunty) / (radiusy - RandDikte), 2)) >= 1 
+                && isPuntBinnenCirkel(p, radiusx, radiusy, middelpuntx, middelpunty));
         }
 
-        private bool helecirkel(Point p, double radiusx, double radiusy, double middelpuntx, double middelpunty)
+        private static bool isPuntBinnenCirkel(Point p, double radiusx, double radiusy, double middelpuntx, double middelpunty)
         {
-            if (Math.Sqrt(Math.Pow((p.X - middelpuntx) / radiusx, 2) + Math.Pow((p.Y - middelpunty) / radiusy, 2)) <= 1)
-                return true;
-            else
-                return false;
+            return (Math.Sqrt(Math.Pow((p.X - middelpuntx) / radiusx, 2) + Math.Pow((p.Y - middelpunty) / radiusy, 2)) <= 1);
         }
-
-
-
-
-
 
         public void Terugdraaien()
         {
