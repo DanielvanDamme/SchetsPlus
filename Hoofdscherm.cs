@@ -34,7 +34,7 @@ namespace SchetsEditor
             menuStrip.Items.Add(menu);
         }
         private void about(object o, EventArgs ea)
-        {   MessageBox.Show("Schets versie 1.0\n(c) UU Informatica 2010"
+        {   MessageBox.Show("Schets versie 1.5\n(c) UU Informatica 2013\nJens van Langen, Youri Zwanepol"
                            , "Over \"Schets\""
                            , MessageBoxButtons.OK
                            , MessageBoxIcon.Information
