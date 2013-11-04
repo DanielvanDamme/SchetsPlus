@@ -78,7 +78,7 @@ namespace SchetsEditor
                 this.isBitmapGewijzigd = true;
             }
         }
-        public void Teken(Graphics gr)
+        /*public void Teken(Graphics gr)
         {
             gr.DrawImage(bitmap, 0, 0);
             // 2: Deze actie veroorzaakt een wijziging, tenzij het scherm net geopend is
@@ -89,13 +89,51 @@ namespace SchetsEditor
             }
             else
                 this.isBitmapGewijzigd = true;
+        }*/
+        public void Teken(Graphics gr)
+        {
+            List<TekenObject> objects = objectmanager.Ophalen;
+
+            gr.FillRectangle(Brushes.White, 0, 0, 1000, 1000);
+
+            Font font = new Font("Tahoma", 40);
+
+            foreach (TekenObject obj in objects)
+            {
+                Color color = Color.FromName(obj.Kleur);
+                SolidBrush brush = new SolidBrush(color);
+
+                switch (obj.Tool)
+                {
+                    case "tekst":
+                        gr.DrawString(obj.Tekst, font, brush, obj.Points[0], StringFormat.GenericDefault);
+                        break;
+                    case "kader":
+                        new RechthoekTool().Teken(gr, obj.Points[0], obj.Points[1], brush);
+                        break;
+                    case "vlak":
+                        new VolRechthoekTool().Teken(gr, obj.Points[0], obj.Points[1], brush);
+                        break;
+                    case "cirkel":
+                        new CirkelTool().Teken(gr, obj.Points[0], obj.Points[1], brush);
+                        break;
+                    case "rondje":
+                        new RondjeTool().Teken(gr, obj.Points[0], obj.Points[1], brush);
+                        break;
+                    case "lijn":
+                        new LijnTool().Teken(gr, obj.Points[0], obj.Points[1], brush);
+                        break;
+                    case "pen":
+                        new PenTool().TekenLijn(gr, obj.Points, brush);
+                        break;
+                }
+            }
         }
         public void Schoon()
         {
             Graphics gr = Graphics.FromImage(bitmap);
             //gr.FillRectangle(Brushes.White, 0, 0, bitmap.Width, bitmap.Height);
             objectmanager.Reset();
-            // 2: Deze actie veroorzaakt een wijziging
             this.isBitmapGewijzigd = true;
         }
         public void Roteer()
@@ -109,7 +147,7 @@ namespace SchetsEditor
             Graphics gr = Graphics.FromImage(bitmap);
             //gr.FillRectangle(Brushes.White, 0, 0, bitmap.Width, bitmap.Height);
             objectmanager.Terugdraaien();
-            DrawFromXML.DrawingFromXML(gr, objectmanager.Ophalen);
+            //DrawFromXML.DrawingFromXML(s, objectmanager.Ophalen);
             // 2: Deze actie veroorzaakt een wijziging
             this.isBitmapGewijzigd = true;
         }

@@ -20,21 +20,21 @@ namespace SchetsEditor
     {
         protected Brush kwast;
         protected Point startpunt;
-        protected TekenObject obj;
+        protected TekenObject tekenObject;
         protected List<Point> points;
-        protected ObjectControl objectmanager;
+        protected ObjectControl objectcontrol;
 
         public virtual void MuisVast(SchetsControl s, Point p)
         {
             kwast = new SolidBrush(s.PenKleur);
             startpunt = p;
-            obj = new TekenObject();
+            tekenObject = new TekenObject();
             points = new List<Point>();
-            objectmanager = s.GetManager;
+            objectcontrol = s.GetManager;
 
-            objectmanager.Toewijzen(obj);
+            objectcontrol.Toewijzen(tekenObject);
             points.Add(p);
-            obj.Kleur = (s.PenKleur).Name;
+            tekenObject.Kleur = (s.PenKleur).Name;
         }
 
         public virtual void MuisLos(SchetsControl s, Point p) { }
@@ -51,8 +51,8 @@ namespace SchetsEditor
         public override void MuisVast(SchetsControl s, Point p)
         {
             base.MuisVast(s, p);
-            obj.Tool = ToString();
-            obj.Points = points;
+            tekenObject.Tool = ToString();
+            tekenObject.Points = points;
         }
 
         public override void MuisDrag(SchetsControl s, Point p) { }
@@ -62,15 +62,14 @@ namespace SchetsEditor
             if (c == 8)
             {
                 string res = "";
-                for (int i = 0; i < (obj.Tekst.Length - 1); i++)
-                    res += obj.Tekst[i];
-                obj.Tekst = res;
+                for (int i = 0; i < (tekenObject.Tekst.Length - 1); i++)
+                    res += tekenObject.Tekst[i];
+                tekenObject.Tekst = res;
             }
             else if (c >= 32)
-            { obj.Tekst += c.ToString(); }
+            { tekenObject.Tekst += c.ToString(); }
 
             s.Invalidate();
-            DrawFromXML.DrawingFromXML(s.MaakBitmapGraphics(), objectmanager.Ophalen);
         }
     }
 
@@ -94,7 +93,7 @@ namespace SchetsEditor
         public override void MuisVast(SchetsControl s, Point p)
         {
             base.MuisVast(s, p);
-            obj.Tool = ToString();
+            tekenObject.Tool = ToString();
         }
 
         public override void MuisDrag(SchetsControl s, Point p)
@@ -107,11 +106,9 @@ namespace SchetsEditor
         {
             points.Add(p);
 
-            obj.Points = points;
-
+            tekenObject.Points = points;
             
             s.Invalidate();
-            DrawFromXML.DrawingFromXML(s.MaakBitmapGraphics(), objectmanager.Ophalen);
         }
 
         public abstract void Teken(Graphics g, Point p1, Point p2);
@@ -225,10 +222,8 @@ namespace SchetsEditor
 
         public void MuisVast(SchetsControl s, Point p)
         {
-            ObjectControl objectmanager = s.GetManager;
-            objectmanager.objectVerwijderen(p);
-            s.MaakBitmapGraphics().FillRectangle(Brushes.White, 0, 0, s.GetBitmap.Width, s.GetBitmap.Height);
-            DrawFromXML.DrawingFromXML(s.MaakBitmapGraphics(), objectmanager.Ophalen);
+            ObjectControl objectcontrol = s.GetManager;
+            objectcontrol.objectVerwijderen(p);
             s.Invalidate();
         }
     }

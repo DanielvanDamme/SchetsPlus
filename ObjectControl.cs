@@ -65,45 +65,4 @@ namespace SchetsEditor
             }
         }
     }
-
-    public class DrawFromXML
-    {
-        public static void DrawingFromXML(Graphics gr, List<TekenObject> objects)
-        {
-            gr.FillRectangle(Brushes.White, 0, 0, 1000, 1000);
-
-            Font font = new Font("Tahoma", 40);
-
-            foreach (TekenObject obj in objects)
-            {
-                Color color = Color.FromName(obj.Kleur);
-                SolidBrush brush = new SolidBrush(color);
-
-                switch (obj.Tool)
-                {
-                    case "tekst":
-                        gr.DrawString(obj.Tekst, font, brush, obj.Points[0], StringFormat.GenericDefault);
-                        break;
-                    case "kader":
-                        new RechthoekTool().Teken(gr, obj.Points[0], obj.Points[1], brush);
-                        break;
-                    case "vlak":
-                        new VolRechthoekTool().Teken(gr, obj.Points[0], obj.Points[1], brush);
-                        break;
-                    case "cirkel":
-                        new CirkelTool().Teken(gr, obj.Points[0], obj.Points[1], brush);
-                        break;
-                    case "rondje":
-                        new RondjeTool().Teken(gr, obj.Points[0], obj.Points[1], brush);
-                        break;
-                    case "lijn":
-                        new LijnTool().Teken(gr, obj.Points[0], obj.Points[1], brush);
-                        break;
-                    case "pen":
-                        new PenTool().TekenLijn(gr, obj.Points, brush);
-                        break;
-                }
-            }
-        }
-    }
 }
