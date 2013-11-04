@@ -67,7 +67,7 @@ namespace SchetsEditor
             { obj.Tekst += c.ToString(); }
 
             s.Invalidate();
-            DrawFromXML.DrawingFromXML(s.MaakBitmapGraphics(), objectmanager.Ophalen);
+            Schets.Teken(s.MaakBitmapGraphics(), objectmanager.Ophalen);
         }
     }
 
@@ -104,7 +104,7 @@ namespace SchetsEditor
         {
             obj.Points.Add(p);            
             s.Invalidate();
-            DrawFromXML.DrawingFromXML(s.MaakBitmapGraphics(), objectmanager.Ophalen);
+            Schets.Teken(s.MaakBitmapGraphics(), objectmanager.Ophalen);
         }
 
         public abstract void Teken(Graphics g, Point p1, Point p2);
@@ -220,7 +220,7 @@ namespace SchetsEditor
         {
             ObjectControl objectmanager = s.GetManager;
             objectmanager.verwijderBovensteObjectOpPunt(p);
-            DrawFromXML.DrawingFromXML(s.MaakBitmapGraphics(), objectmanager.Ophalen);
+           Schets.Teken(s.MaakBitmapGraphics(), objectmanager.Ophalen);
             s.Invalidate();
         }
     }

@@ -95,20 +95,78 @@ namespace SchetsEditor
         public void Schoon()
         {
             objectcontrol.Reset();
-            DrawFromXML.DrawingFromXML(Graphics.FromImage(bitmap), objectcontrol.Ophalen);
+            Teken(Graphics.FromImage(bitmap), objectcontrol.Ophalen);
             this.isBitmapGewijzigd = true;
         }
         public void Roteer()
         {
             objectcontrol.Roteer(bitmap.Width, bitmap.Height);
-            DrawFromXML.DrawingFromXML(Graphics.FromImage(bitmap), objectcontrol.Ophalen);
+            Teken(Graphics.FromImage(bitmap), objectcontrol.Ophalen);
             this.isBitmapGewijzigd = true;
         }
         public void Terugdraaien()
         {    
             objectcontrol.Terugdraaien();
-            DrawFromXML.DrawingFromXML(Graphics.FromImage(bitmap), objectcontrol.Ophalen);
+            Teken(Graphics.FromImage(bitmap), objectcontrol.Ophalen);
             this.isBitmapGewijzigd = true;
+        }
+        public static void Teken(Graphics gr, List<TekenObject> objects)
+        {
+            gr.FillRectangle(Brushes.White, 0, 0, 1000, 1000);
+            Font font = new Font("Tahoma", 40);
+
+            foreach (TekenObject obj in objects)
+            {
+                Color color = Color.FromName(obj.Kleur);
+                SolidBrush brush = new SolidBrush(color);
+
+                switch (obj.Tool)
+                {
+                    case "tekst":
+                        SizeF sz = gr.MeasureString(obj.Tekst, font);
+                        Bitmap tekstBmp = new Bitmap((int)sz.Width, (int)sz.Height);
+                        Graphics gOff = Graphics.FromImage(tekstBmp);
+                        gOff.DrawString(obj.Tekst, font, brush, new Point(0, 0), StringFormat.GenericDefault);
+                        if (obj.Hoek == 90)
+                        {
+                            tekstBmp.RotateFlip(RotateFlipType.Rotate90FlipNone);
+                            gr.DrawImage(tekstBmp, obj.Points[0].X - (int)sz.Height, obj.Points[0].Y);
+                        }
+                        else if (obj.Hoek == 180)
+                        {
+                            tekstBmp.RotateFlip(RotateFlipType.Rotate180FlipNone);
+                            gr.DrawImage(tekstBmp, obj.Points[0].X - (int)sz.Width, obj.Points[0].Y - (int)sz.Height);
+                        }
+                        else if (obj.Hoek == 270)
+                        {
+                            tekstBmp.RotateFlip(RotateFlipType.Rotate270FlipNone);
+                            gr.DrawImage(tekstBmp, obj.Points[0].X, obj.Points[0].Y - (int)sz.Width);
+                        }
+                        else
+                        {
+                            gr.DrawImage(tekstBmp, obj.Points[0]);
+                        }
+                        break;
+                    case "kader":
+                        new RechthoekTool().Teken(gr, obj.Points[0], obj.Points[1], brush);
+                        break;
+                    case "vlak":
+                        new VolRechthoekTool().Teken(gr, obj.Points[0], obj.Points[1], brush);
+                        break;
+                    case "cirkel":
+                        new CirkelTool().Teken(gr, obj.Points[0], obj.Points[1], brush);
+                        break;
+                    case "rondje":
+                        new RondjeTool().Teken(gr, obj.Points[0], obj.Points[1], brush);
+                        break;
+                    case "lijn":
+                        new LijnTool().Teken(gr, obj.Points[0], obj.Points[1], brush);
+                        break;
+                    case "pen":
+                        new PenTool().TekenLijn(gr, obj.Points, brush);
+                        break;
+                }
+            }
         }
     }
 }
