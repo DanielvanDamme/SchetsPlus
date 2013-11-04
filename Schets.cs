@@ -78,23 +78,17 @@ namespace SchetsEditor
                 this.isBitmapGewijzigd = true;
             }
         }
-        /*public void Teken(Graphics gr)
+        public void Teken(Graphics gr)
         {
             gr.DrawImage(bitmap, 0, 0);
-            // 2: Deze actie veroorzaakt een wijziging, tenzij het scherm net geopend is
+
             if (isNieuwScherm)
             {
                 this.isBitmapGewijzigd = false;
                 isNieuwScherm = false;
             }
-            else
-                this.isBitmapGewijzigd = true;
-        }*/
-        public void Teken(Graphics gr)
-        {
-            List<TekenObject> objects = objectmanager.Ophalen;
 
-            gr.FillRectangle(Brushes.White, 0, 0, 1000, 1000);
+            List<TekenObject> objects = objectmanager.Ophalen;
 
             Font font = new Font("Tahoma", 40);
 
@@ -128,6 +122,8 @@ namespace SchetsEditor
                         break;
                 }
             }
+
+            this.isBitmapGewijzigd = true;
         }
         public void Schoon()
         {
