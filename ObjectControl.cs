@@ -9,7 +9,7 @@ namespace SchetsEditor
     public class ObjectControl
     {
         private List<TekenObject> tekenObjecten = new List<TekenObject>();
-        const int RandDikte = 3;
+        const int GumRandDikte = 8;
 
         public ObjectControl()
         {
@@ -80,40 +80,68 @@ namespace SchetsEditor
                 case "lijn":
                     return isOpLijnGeklikt(obj, p);
                 case "pen":
+                    return isOpPenGeklikt(obj, p);
+            }
+            return false;
+        }
 
+        private static bool isOpPenGeklikt(TekenObject obj, Point p)
+        {
+            for (int i = 1; i < obj.Points.Count; i++)
+            {
+                if (afstandTotLijn(obj.Points[i - 1], obj.Points[i], p) < GumRandDikte)
                     return true;
             }
             return false;
         }
 
-        // Deze methode is afkomstig van
-        // http://en.wikipedia.org/wiki/Distance_from_a_point_to_a_line
-        private static bool isOpLijnGeklikt(TekenObject obj, Point p)
+
+        // Deze methode is afgeleid van http://en.wikipedia.org/wiki/Distance_from_a_point_to_a_line
+        private static double afstandTotLijn(Point begin, Point eind, Point p)
         {
-            Point begin = obj.Points[0];
-            Point eind = obj.Points[1];
+            Point nabijPunt;
             int dx = eind.X - begin.X;
             int dy = eind.Y - begin.Y;
 
-            // y = ax + b
-            // a is de richtingscoefficient van de lijn (delta Y / delta X)
-            int a = dy / dx;
-
-            // om b te berekenen gebruiken we: b = y - ax
-            int b = begin.Y - a * begin.X;
-
-            double res = ((p.X - begin.X) * dx + (p.Y - begin.Y) * dy / (dx * dx + dy * dy));
-
-            if (res > 1)
-                res = 1;
-            else if (res < 0)
-                res = 0;
+            if ((dx == 0) && (dy == 0))
+            {
+                // It's a point not a line segment.
+                nabijPunt = begin;
+                dx = p.X - begin.X;
+                dy = p.Y - begin.Y;
+                return Math.Sqrt(dx * dx + dy * dy);
+            }
 
 
+            float res = ((p.X - begin.X) * dx + (p.Y - begin.Y) * dy) / (dx * dx + dy * dy);
 
-            double num = Math.Abs(p.Y - a * p.X - b);
-            double denum = Math.Sqrt(a * a + 1);
-            return (num / denum < 3);
+            if (res < 0)
+            {
+                nabijPunt = begin;
+                dx = p.X - begin.X;
+                dy = p.Y - begin.Y;
+            }
+            else if (res > 1)
+            {
+                nabijPunt = eind;
+                dx = p.X - eind.X;
+                dy = p.Y - eind.Y;
+            }
+            else
+            {
+                nabijPunt = new Point((int)(begin.X + res * dx), (int)(begin.Y + res * dy));
+                dx = p.X - nabijPunt.X;
+                dy = p.Y - nabijPunt.Y;
+            }
+
+            return Math.Sqrt(dx * dx + dy * dy);
+            //return Math.Abs((begin.Y - p.Y) * dx - (begin.X - p.X) * dy) /
+            //       Math.Sqrt(dx * dx + dy * dy);
+        }
+
+        private static bool isOpLijnGeklikt(TekenObject obj, Point p)
+        {
+            return (afstandTotLijn(obj.Points[0], obj.Points[1], p) < GumRandDikte);
         }
 
         private static bool isBinnenVierkant(TekenObject obj, Point p, int aanpassing)
@@ -124,7 +152,7 @@ namespace SchetsEditor
 
         private static bool isKaderRaakGeklikt(TekenObject obj, Point p)
         {
-            return (!isBinnenVierkant(obj, p, RandDikte) && isBinnenVierkant(obj, p, 0));
+            return (!isBinnenVierkant(obj, p, GumRandDikte) && isBinnenVierkant(obj, p, 0));
         }
 
         private static bool isEclipseRaakGeklikt(TekenObject obj, Point p, bool vollecirkel)
@@ -148,7 +176,7 @@ namespace SchetsEditor
 
         private static bool isPuntOpRand(Point p, double radiusx, double radiusy, double middelpuntx, double middelpunty)
         {
-            return (Math.Sqrt(Math.Pow((p.X - middelpuntx) / (radiusx - RandDikte), 2) + Math.Pow((p.Y - middelpunty) / (radiusy - RandDikte), 2)) >= 1 
+            return (Math.Sqrt(Math.Pow((p.X - middelpuntx) / (radiusx - GumRandDikte), 2) + Math.Pow((p.Y - middelpunty) / (radiusy - GumRandDikte), 2)) >= 1 
                 && isPuntBinnenCirkel(p, radiusx, radiusy, middelpuntx, middelpunty));
         }
 
