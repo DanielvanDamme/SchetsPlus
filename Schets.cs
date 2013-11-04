@@ -128,7 +128,7 @@ namespace SchetsEditor
                 {
                     case "tekst":
                         SizeF sz = gr.MeasureString(obj.Tekst, font);
-                        Bitmap tekstBmp = new Bitmap((int)sz.Width, (int)sz.Height);
+                        Bitmap tekstBmp = new Bitmap((int)sz.Width+1, (int)sz.Height+1);
                         Graphics gOff = Graphics.FromImage(tekstBmp);
                         gOff.DrawString(obj.Tekst, font, brush, new Point(0, 0), StringFormat.GenericDefault);
                         if (obj.Hoek == 90)
