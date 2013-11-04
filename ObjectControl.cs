@@ -227,7 +227,7 @@ namespace SchetsEditor
                         SizeF sz = gr.MeasureString(obj.Tekst, font);
                         Bitmap tekstBmp = new Bitmap((int)sz.Width, (int)sz.Height);
                         Graphics gOff = Graphics.FromImage(tekstBmp);
-                        gOff.DrawString(obj.Tekst, font, Brushes.Black, new Point(0, 0));
+                        gOff.DrawString(obj.Tekst, font, brush, new Point(0, 0));
                         if (obj.Hoek == 90)
                         {
                             tekstBmp.RotateFlip(RotateFlipType.Rotate90FlipNone);
