@@ -29,6 +29,30 @@ namespace SchetsEditor
             tekenObjecten = new List<TekenObject>();
         }
 
+        public void Roteer(int width, int height)
+        {
+            foreach (TekenObject tekenObject in tekenObjecten)
+            {
+                for (int i = 0; i < tekenObject.Points.Count; i++)
+                {
+                    int A = tekenObject.Points[i].X - width / 2;
+                    int B = tekenObject.Points[i].Y - height / 2;
+
+                    Point punt = new Point(-B, A);
+
+                    int C = -B + width / 2;
+                    int D = A + height / 2;
+
+                    tekenObject.Points[i] = new Point(C, D);
+                }
+
+                if (tekenObject.Tool == "tekst")
+                {
+                    tekenObject.Hoek = (tekenObject.Hoek == 270) ? 0 : tekenObject.Hoek + 90;
+                }
+            }
+        }
+
         public void SerializeToXML(string bestandsnaam)
         {
             XmlSerializer serializer = new XmlSerializer(typeof(List<TekenObject>));
@@ -207,7 +231,16 @@ namespace SchetsEditor
                 switch (obj.Tool)
                 {
                     case "tekst":
-                        gr.DrawString(obj.Tekst, font, brush, obj.Points[0], StringFormat.GenericDefault);
+                        
+                        SizeF sz = gr.VisibleClipBounds.Size;
+                        gr.TranslateTransform(sz.Width / 2, sz.Height / 2);
+                        gr.RotateTransform(obj.Hoek);
+                        sz = gr.MeasureString(obj.Tekst, font);
+                        gr.DrawString(obj.Tekst, font, Brushes.Black, -(sz.Width / 2) + obj.Points[0].X, -(sz.Height / 2) + obj.Points[0].Y);
+                        gr.ResetTransform();
+
+                        //gr.DrawString(obj.Tekst, font, brush, obj.Points[0], StringFormat.GenericDefault);
+                        //gr.ResetTransform();
                         break;
                     case "kader":
                         new RechthoekTool().Teken(gr, obj.Points[0], obj.Points[1], brush);

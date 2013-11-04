@@ -3,14 +3,12 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Xml.Serialization;
+using System.ComponentModel;
 
 namespace SchetsEditor
 {
     public class TekenObject
     {
-        public TekenObject()
-        { Tekst = null; }
-
         public string Tool
         { get; set; }
 
@@ -20,7 +18,12 @@ namespace SchetsEditor
         public string Kleur
         { get; set; }
 
+        [DefaultValue("")]
         public string Tekst
-        { get; set; }      
+        { get; set; }
+        
+        [DefaultValue(0)]
+        public int Hoek
+        { get; set; }
     }
 }
