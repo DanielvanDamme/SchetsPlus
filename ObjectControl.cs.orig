@@ -8,6 +8,20 @@ namespace SchetsEditor
 {
     public class ObjectControl
     {
+<<<<<<< HEAD
+        private List<TekenObject> objecten = new List<TekenObject>();
+
+        public List<TekenObject> getObjects
+        {
+            get { return objecten; }
+        }
+
+        public void verwijderObjecten()
+        {
+            objecten = new List<TekenObject>();
+        }
+
+=======
         private List<TekenObject> tekenObjecten;
 
         public ObjectControl()
@@ -40,11 +54,16 @@ namespace SchetsEditor
         }
 
         // Verplaats Serialize en Deserialize naar opslaan
+>>>>>>> 6a98f756095cfe337f12aad6f13a7550e77c7a48
         public void SerializeToXML(string bestandsnaam)
         {
             XmlSerializer serializer = new XmlSerializer(typeof(List<TekenObject>));
             StreamWriter writer = new StreamWriter(bestandsnaam);
+<<<<<<< HEAD
+            serializer.Serialize(writer, this.objecten);
+=======
             serializer.Serialize(writer, this.tekenObjecten);
+>>>>>>> 6a98f756095cfe337f12aad6f13a7550e77c7a48
             writer.Close();
         }
 
@@ -52,17 +71,77 @@ namespace SchetsEditor
         {
             XmlSerializer deserializer = new XmlSerializer(typeof(List<TekenObject>));
             TextReader textReader = new StreamReader(bestandsnaam);
+<<<<<<< HEAD
+            this.objecten = (List<TekenObject>)deserializer.Deserialize(textReader);
+            textReader.Close();
+        }
+        
+        public void objectToewijzen(TekenObject tekenObject)
+        {
+            objecten.Add(tekenObject);
+        }
+
+=======
             this.tekenObjecten = (List<TekenObject>)deserializer.Deserialize(textReader);
             textReader.Close();
         }
         
+>>>>>>> 6a98f756095cfe337f12aad6f13a7550e77c7a48
         public void objectVerwijderen(Point p)
         {
             for (int i = (tekenObjecten.Count - 1); i >= 0; i--)
             {
-                if (isRaak(objecten[i], p))
+                if (p.X > tekenObjecten[i].Points[0].X && p.X < tekenObjecten[i].Points[1].X && p.Y > tekenObjecten[i].Points[0].Y && p.Y < tekenObjecten[i].Points[1].Y)
                     tekenObjecten.RemoveAt(i);
             }
+        }
+    }
+
+    public class DrawFromXML
+    {
+        public static void DrawingFromXML(Graphics gr, List<TekenObject> objects)
+        {
+            gr.FillRectangle(Brushes.White, 0, 0, 1000, 1000);
+
+            Font font = new Font("Tahoma", 40);
+
+            foreach (TekenObject obj in objects)
+            {
+<<<<<<< HEAD
+                if (isRaak(objecten[i], p))
+=======
+                Color color = Color.FromName(obj.Kleur);
+                SolidBrush brush = new SolidBrush(color);
+
+                switch (obj.Tool)
+>>>>>>> 6a98f756095cfe337f12aad6f13a7550e77c7a48
+                {
+                    case "tekst":
+                        gr.DrawString(obj.Tekst, font, brush, obj.Points[0], StringFormat.GenericDefault);
+                        break;
+                    case "kader":
+                        new RechthoekTool().Teken(gr, obj.Points[0], obj.Points[1], brush);
+                        break;
+                    case "vlak":
+                        new VolRechthoekTool().Teken(gr, obj.Points[0], obj.Points[1], brush);
+                        break;
+                    case "cirkel":
+                        new CirkelTool().Teken(gr, obj.Points[0], obj.Points[1], brush);
+                        break;
+                    case "rondje":
+                        new RondjeTool().Teken(gr, obj.Points[0], obj.Points[1], brush);
+                        break;
+                    case "lijn":
+                        new LijnTool().Teken(gr, obj.Points[0], obj.Points[1], brush);
+                        break;
+                    case "pen":
+                        new PenTool().TekenLijn(gr, obj.Points, brush);
+                        break;
+                }
+            }
+        }
+<<<<<<< HEAD
+
         private bool isRaak(TekenObject obj, Point p)
         {
             switch (obj.Tool)
@@ -106,7 +185,9 @@ namespace SchetsEditor
                 return helecirkel(p, radiusx, radiusy, middelpuntx, middelpunty);
             }
             else
+            {
                 return cirkelrand(p, radiusx, radiusy, middelpuntx, middelpunty);
+            }
         }
 
         private bool cirkelrand(Point p, double radiusx, double radiusy, double middelpuntx, double middelpunty)
@@ -132,6 +213,10 @@ namespace SchetsEditor
         
         
 
+        public void actieTerugdraaien()
+        {
+            if (objecten.Count > 0)
+                objecten.RemoveAt(objecten.Count-1);
         }
     }
 
@@ -139,8 +224,6 @@ namespace SchetsEditor
     {
         public static void DrawingFromXML(Graphics gr, List<TekenObject> objects)
         {
-            gr.FillRectangle(Brushes.White, 0, 0, 1000, 1000);
-
             Font font = new Font("Tahoma", 40);
 
             foreach (TekenObject obj in objects)
@@ -174,5 +257,7 @@ namespace SchetsEditor
                 }
             }
         }
+=======
+>>>>>>> 6a98f756095cfe337f12aad6f13a7550e77c7a48
     }
 }
