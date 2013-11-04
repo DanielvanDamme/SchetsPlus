@@ -14,6 +14,13 @@ namespace SchetsEditor
         // 2: Bij initialisatie van een object Schets isNieuwScherm true meegeven
         private bool isNieuwScherm = true;
         private Bitmap bitmap;
+        private static Font font = new Font("Tahoma", 40);
+
+        // De eigenschap font omdat deze buiten deze klasse nodig is
+        public static Font Lettertype
+        {
+            get { return font; }
+        }
 
         private ObjectControl objectcontrol = new ObjectControl();
 
@@ -114,10 +121,11 @@ namespace SchetsEditor
             Teken(Graphics.FromImage(bitmap), objectcontrol.Ophalen);
             this.isBitmapGewijzigd = true;
         }
+
+
         public static void Teken(Graphics gr, List<TekenObject> objects)
         {
             gr.FillRectangle(Brushes.White, 0, 0, 1000, 1000);
-            Font font = new Font("Tahoma", 40);
 
             foreach (TekenObject obj in objects)
             {

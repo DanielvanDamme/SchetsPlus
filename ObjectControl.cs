@@ -8,15 +8,12 @@ namespace SchetsEditor
 {
     public class ObjectControl
     {
-        private List<TekenObject> tekenObjecten = new List<TekenObject>();
+        private List<TekenObject> tekenObjecten;
         private const int GumRandDikte = 8;
 
         public List<TekenObject> Ophalen
         {
-            get
-            {
-                return tekenObjecten;
-            }
+            get { return tekenObjecten; }
         }
 
         public ObjectControl()
@@ -65,7 +62,6 @@ namespace SchetsEditor
                 }
             }
         }
-
 
         public void SerializeToXML(string bestandsnaam)
         {
@@ -135,7 +131,7 @@ namespace SchetsEditor
         {
             Bitmap tijdelijk = new Bitmap(1,1);
             Graphics g = Graphics.FromImage(tijdelijk);
-            SizeF sz = g.MeasureString(obj.Tekst, DrawFromXML.Lettertype);
+            SizeF sz = g.MeasureString(obj.Tekst, Schets.Lettertype);
             Point begin = obj.Points[0];
             if (p.X > begin.X && p.X < begin.X + sz.Width && p.Y > begin.Y && p.Y < begin.Y + sz.Height)
                 return true;
@@ -235,75 +231,6 @@ namespace SchetsEditor
             }
 
             return Math.Sqrt(Math.Pow(p.X - xx, 2) + Math.Pow(p.Y - yy, 2));
-        }
-    }
-
-    public class DrawFromXML
-    {
-        private static Font font = new Font("Tahoma", 40);
-
-        // De eigenschap font omdat deze buiten deze klasse nodig is
-        public static Font Lettertype
-        {
-            get { return font; }
-        }
-
-        public static void DrawingFromXML(Graphics gr, List<TekenObject> objects)
-        {
-            gr.FillRectangle(Brushes.White, 0, 0, 1000, 1000);
-
-            foreach (TekenObject obj in objects)
-            {
-                Color color = Color.FromName(obj.Kleur);
-                SolidBrush brush = new SolidBrush(color);
-
-                switch (obj.Tool)
-                {
-                    case "tekst":
-                        SizeF sz = gr.MeasureString(obj.Tekst, font);
-                        Bitmap tekstBmp = new Bitmap((int)sz.Width, (int)sz.Height);
-                        Graphics gOff = Graphics.FromImage(tekstBmp);
-                        gOff.DrawString(obj.Tekst, font, Brushes.Black, new Point(0, 0));
-                        if (obj.Hoek == 90)
-                        {
-                            tekstBmp.RotateFlip(RotateFlipType.Rotate90FlipNone);
-                            gr.DrawImage(tekstBmp, obj.Points[0].X - (int)sz.Height, obj.Points[0].Y);
-                        }
-                        else if (obj.Hoek == 180)
-                        {
-                            tekstBmp.RotateFlip(RotateFlipType.Rotate180FlipNone);
-                            gr.DrawImage(tekstBmp, obj.Points[0].X - (int)sz.Width, obj.Points[0].Y - (int)sz.Height);
-                        }
-                        else if (obj.Hoek == 270)
-                        {
-                            tekstBmp.RotateFlip(RotateFlipType.Rotate270FlipNone);
-                            gr.DrawImage(tekstBmp, obj.Points[0].X, obj.Points[0].Y - (int)sz.Width);
-                        }
-                        else
-                        {
-                            gr.DrawImage(tekstBmp, obj.Points[0]);
-                        }
-                        break;
-                    case "kader":
-                        new RechthoekTool().Teken(gr, obj.Points[0], obj.Points[1], brush);
-                        break;
-                    case "vlak":
-                        new VolRechthoekTool().Teken(gr, obj.Points[0], obj.Points[1], brush);
-                        break;
-                    case "cirkel":
-                        new CirkelTool().Teken(gr, obj.Points[0], obj.Points[1], brush);
-                        break;
-                    case "rondje":
-                        new RondjeTool().Teken(gr, obj.Points[0], obj.Points[1], brush);
-                        break;
-                    case "lijn":
-                        new LijnTool().Teken(gr, obj.Points[0], obj.Points[1], brush);
-                        break;
-                    case "pen":
-                        new PenTool().TekenLijn(gr, obj.Points, brush);
-                        break;
-                }
-            }
         }
     }
 }
