@@ -19,11 +19,32 @@ de onderstaande toevoeging c.q. wijziging behoort.
 # Resources.resx # Twee plaatjes toegevoegd aan de Resources. cirkel.png als cirkel and rondje.png als rondje.
 ################################################################################################################
 
+
   OPDRACHT 2
 ################################################################################################################
 # BESTANDSNAAM   # AANPASSING
 ################################################################################################################
 # Hoofscherm.cs  # Nieuwe methode om een OpenFileDialog aan te roepen. Daarnaast een nieuwe eventhandler die 
+#                # wordt meegegeven aan nieuwe instanties van SchetsWin.FormClosing via de openBestand methode.
+# SchetsWin.cs   # Een methode toegevoegd om een bestand op te slaan. Daarnaast opslaan aan het menu toegevoegd.
+# SctsControl.cs # Constructor SchetsWin accepteert nu ook een bestandsLocatie als parameter. 2 properties
+#                # toegevoegd om de Bitmap op te vragen en of de Bitmap gewijzigd is.
+# Schets.cs      # isBitmapGewijzigd als member variabele toegevoegd om wijzigingsstatus van de bitmap bij te 
+#                # houden. 2 properties toegevoegd en constructor aangepast net als in SchetsControl.cs.
+################################################################################################################
+
+
+  OPDRACHT 3
+################################################################################################################
+# TOELICHTING
+################################################################################################################
+# Alle elementen die aan de schets worden toegevoegd worden opgeslagen in een List van het type TekenObject. 
+# Het gummen van een penstreep gebeurt in zijn geheel, dat geldt ook voor een tekststring. Bij het gummen wordt
+# rekening gehouden met de gebruiker door een marge van 8 pixels links en rechts van de lijnen te accepteren.
+################################################################################################################
+# BESTANDSNAAM   # AANPASSING
+################################################################################################################
+# --			 # Het gummen van een penstreep gebeurt in zijn geheel, dat geldt ook voor een tekststring.
 #                # wordt meegegeven aan nieuwe instanties van SchetsWin.FormClosing via de openBestand methode.
 # SchetsWin.cs   # Een methode toegevoegd om een bestand op te slaan. Daarnaast opslaan aan het menu toegevoegd.
 # SctsControl.cs # Constructor SchetsWin accepteert nu ook een bestandsLocatie als parameter. 2 properties
