@@ -231,16 +231,29 @@ namespace SchetsEditor
                 switch (obj.Tool)
                 {
                     case "tekst":
-                        
-                        SizeF sz = gr.VisibleClipBounds.Size;
-                        gr.TranslateTransform(sz.Width / 2, sz.Height / 2);
-                        gr.RotateTransform(obj.Hoek);
-                        sz = gr.MeasureString(obj.Tekst, font);
-                        gr.DrawString(obj.Tekst, font, Brushes.Black, -(sz.Width / 2) + obj.Points[0].X, -(sz.Height / 2) + obj.Points[0].Y);
-                        gr.ResetTransform();
-
-                        //gr.DrawString(obj.Tekst, font, brush, obj.Points[0], StringFormat.GenericDefault);
-                        //gr.ResetTransform();
+                        SizeF sz = gr.MeasureString(obj.Tekst, font);
+                        Bitmap tekstBmp = new Bitmap((int)sz.Width, (int)sz.Height);
+                        Graphics gOff = Graphics.FromImage(tekstBmp);
+                        gOff.DrawString(obj.Tekst, font, Brushes.Black, new Point(0, 0));
+                        if (obj.Hoek == 90)
+                        {
+                            tekstBmp.RotateFlip(RotateFlipType.Rotate90FlipNone);
+                            gr.DrawImage(tekstBmp, obj.Points[0].X - (int)sz.Height, obj.Points[0].Y);
+                        }
+                        else if (obj.Hoek == 180)
+                        {
+                            tekstBmp.RotateFlip(RotateFlipType.Rotate180FlipNone);
+                            gr.DrawImage(tekstBmp, obj.Points[0].X - (int)sz.Width, obj.Points[0].Y - (int)sz.Height);
+                        }
+                        else if (obj.Hoek == 270)
+                        {
+                            tekstBmp.RotateFlip(RotateFlipType.Rotate270FlipNone);
+                            gr.DrawImage(tekstBmp, obj.Points[0].X, obj.Points[0].Y - (int)sz.Width);
+                        }
+                        else
+                        {
+                            gr.DrawImage(tekstBmp, obj.Points[0]);
+                        }
                         break;
                     case "kader":
                         new RechthoekTool().Teken(gr, obj.Points[0], obj.Points[1], brush);
