@@ -93,8 +93,8 @@ namespace SchetsEditor
         public void Schoon()
         {
             Graphics gr = Graphics.FromImage(bitmap);
-            gr.FillRectangle(Brushes.White, 0, 0, bitmap.Width, bitmap.Height);
-            objectmanager.verwijderObjecten();
+            //gr.FillRectangle(Brushes.White, 0, 0, bitmap.Width, bitmap.Height);
+            objectmanager.Reset();
             // 2: Deze actie veroorzaakt een wijziging
             this.isBitmapGewijzigd = true;
         }
@@ -107,9 +107,9 @@ namespace SchetsEditor
         public void Terugdraaien()
         {    
             Graphics gr = Graphics.FromImage(bitmap);
-            gr.FillRectangle(Brushes.White, 0, 0, bitmap.Width, bitmap.Height);
-            objectmanager.actieTerugdraaien();
-            DrawFromXML.DrawingFromXML(gr, objectmanager.getObjects);
+            //gr.FillRectangle(Brushes.White, 0, 0, bitmap.Width, bitmap.Height);
+            objectmanager.Terugdraaien();
+            DrawFromXML.DrawingFromXML(gr, objectmanager.Ophalen);
             // 2: Deze actie veroorzaakt een wijziging
             this.isBitmapGewijzigd = true;
         }

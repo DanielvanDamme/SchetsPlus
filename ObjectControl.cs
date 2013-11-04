@@ -8,23 +8,43 @@ namespace SchetsEditor
 {
     public class ObjectControl
     {
-        private List<TekenObject> objecten = new List<TekenObject>();
+        private List<TekenObject> tekenObjecten;
 
-        public List<TekenObject> getObjects
+        public ObjectControl()
         {
-            get { return objecten; }
+            Reset();
         }
 
-        public void verwijderObjecten()
+        public List<TekenObject> Ophalen
         {
-            objecten = new List<TekenObject>();
+            get 
+            { 
+                return tekenObjecten; 
+            }
         }
 
+        public void Reset()
+        {
+            tekenObjecten = new List<TekenObject>();
+        }
+
+        public void Terugdraaien()
+        {
+            if (tekenObjecten.Count > 0)
+                tekenObjecten.RemoveAt(tekenObjecten.Count - 1);
+        }
+
+        public void Toewijzen(TekenObject tekenObject)
+        {
+            tekenObjecten.Add(tekenObject);
+        }
+
+        // Verplaats Serialize en Deserialize naar opslaan
         public void SerializeToXML(string bestandsnaam)
         {
             XmlSerializer serializer = new XmlSerializer(typeof(List<TekenObject>));
             StreamWriter writer = new StreamWriter(bestandsnaam);
-            serializer.Serialize(writer, this.objecten);
+            serializer.Serialize(writer, this.tekenObjecten);
             writer.Close();
         }
 
@@ -32,28 +52,17 @@ namespace SchetsEditor
         {
             XmlSerializer deserializer = new XmlSerializer(typeof(List<TekenObject>));
             TextReader textReader = new StreamReader(bestandsnaam);
-            this.objecten = (List<TekenObject>)deserializer.Deserialize(textReader);
+            this.tekenObjecten = (List<TekenObject>)deserializer.Deserialize(textReader);
             textReader.Close();
         }
         
-        public void objectToewijzen(TekenObject tekenObject)
-        {
-            objecten.Add(tekenObject);
-        }
-
         public void objectVerwijderen(Point p)
         {
-            for (int i = (objecten.Count - 1); i >= 0; i--)
+            for (int i = (tekenObjecten.Count - 1); i >= 0; i--)
             {
-                if (p.X > objecten[i].Points[0].X && p.X < objecten[i].Points[1].X && p.Y > objecten[i].Points[0].Y && p.Y < objecten[i].Points[1].Y)
-                    objecten.RemoveAt(i);
+                if (p.X > tekenObjecten[i].Points[0].X && p.X < tekenObjecten[i].Points[1].X && p.Y > tekenObjecten[i].Points[0].Y && p.Y < tekenObjecten[i].Points[1].Y)
+                    tekenObjecten.RemoveAt(i);
             }
-        }
-
-        public void actieTerugdraaien()
-        {
-            if (objecten.Count > 0)
-                objecten.RemoveAt(objecten.Count-1);
         }
     }
 
@@ -61,6 +70,8 @@ namespace SchetsEditor
     {
         public static void DrawingFromXML(Graphics gr, List<TekenObject> objects)
         {
+            gr.FillRectangle(Brushes.White, 0, 0, 1000, 1000);
+
             Font font = new Font("Tahoma", 40);
 
             foreach (TekenObject obj in objects)
