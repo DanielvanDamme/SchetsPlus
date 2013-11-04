@@ -162,8 +162,10 @@ namespace SchetsEditor
         // Bepaalt of het punt binnen het object ligt en geeft de mogelijkheid om de grootte van de rechthoek aan te passen
         private static bool isBinnenVierkant(TekenObject obj, Point p, int aanpassing)
         {
-            return (p.X > obj.Points[0].X + aanpassing && p.X < obj.Points[1].X - aanpassing && 
-                    p.Y > obj.Points[0].Y + aanpassing && p.Y < obj.Points[1].Y - aanpassing);
+            Point begin = new Point(Math.Min(obj.Points[0].X, obj.Points[1].X), Math.Min(obj.Points[0].Y, obj.Points[1].Y));
+            Point eind = new Point(Math.Max(obj.Points[0].X, obj.Points[1].X), Math.Max(obj.Points[0].Y, obj.Points[1].Y));
+            return (p.X > begin.X + aanpassing && p.X < eind.X - aanpassing &&
+                    p.Y > begin.Y + aanpassing && p.Y < eind.Y - aanpassing);
         }
 
         // Laat weten of er op de rand van de rechthoek geklikt is, het kader wordt aan weerskanten vergroot met de helft van de dikte van de gumrand
