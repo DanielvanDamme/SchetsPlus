@@ -7,6 +7,7 @@ namespace SchetsEditor
 {
     public class SchetsControl : UserControl
     {
+
         private Schets schets;
         private Color penkleur;
 
@@ -23,6 +24,12 @@ namespace SchetsEditor
         {
             get { return schets.GetBitmap; }
         }
+
+        public Bitmap setbitmap
+        {
+            set { schets.bitmap = value; }
+        }
+
         // 2: Property om de wijzigingsstatus op te vragen of door te geven
         public bool IsBitmapGewijzigd
         {

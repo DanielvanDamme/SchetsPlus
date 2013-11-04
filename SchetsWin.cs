@@ -6,6 +6,7 @@ using System.Windows.Forms;
 using System.Reflection;
 using System.Resources;
 using System.IO;
+using System.Threading;
 
 namespace SchetsEditor
 {

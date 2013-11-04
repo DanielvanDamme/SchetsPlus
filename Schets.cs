@@ -13,7 +13,7 @@ namespace SchetsEditor
         private bool isBitmapGewijzigd = false;
         // 2: Bij initialisatie van een object Schets isNieuwScherm true meegeven
         private bool isNieuwScherm = true;
-        private Bitmap bitmap;
+        public Bitmap bitmap;
 
         private ObjectControl objectmanager = new ObjectControl();
 
@@ -29,8 +29,13 @@ namespace SchetsEditor
         }
         // 2: Property to get the drawing
         public Bitmap GetBitmap
-        {   get { return bitmap; }
+        {
+            get { return bitmap; }
+            
         }
+
+        
+
         public Graphics BitmapGraphics
         {   get { return Graphics.FromImage(bitmap); }
         }
@@ -78,15 +83,12 @@ namespace SchetsEditor
                 this.isBitmapGewijzigd = true;
             }
         }
-        public void Teken(Graphics gr)
+        public static void UpdateBitmap(SchetsControl s)
         {
-            gr.DrawImage(bitmap, 0, 0);
-
-            if (isNieuwScherm)
-            {
-                this.isBitmapGewijzigd = false;
-                isNieuwScherm = false;
-            }
+            Bitmap bitmap = s.GetBitmap;
+            ObjectControl objectmanager = s.GetManager;
+            Bitmap bmp = new Bitmap(bitmap.Width, bitmap.Height);
+            Graphics gr = Graphics.FromImage(bmp);
 
             List<TekenObject> objects = objectmanager.Ophalen;
 
@@ -122,6 +124,21 @@ namespace SchetsEditor
                         break;
                 }
             }
+
+            MessageBox.Show("test");
+            s.setbitmap = new Bitmap(bitmap.Width, bitmap.Height, gr);
+
+        }
+        public void Teken(Graphics gr)
+        {
+            if (isNieuwScherm)
+            {
+                gr.FillRectangle(Brushes.White, 0, 0, bitmap.Width, bitmap.Height);
+                this.isBitmapGewijzigd = false;
+                isNieuwScherm = false;
+            }
+
+            gr.DrawImage(bitmap, 0, 0);
 
             this.isBitmapGewijzigd = true;
         }
