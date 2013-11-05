@@ -146,6 +146,7 @@ namespace SchetsEditor
                         SizeF sz = gr.MeasureString(tekenObject.Tekst, font);
                         Bitmap tekstBmp = new Bitmap((int)sz.Width+1, (int)sz.Height+1);
                         Graphics gOff = Graphics.FromImage(tekstBmp);
+                        gOff.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAlias;
                         gOff.DrawString(tekenObject.Tekst, font, brush, new Point(0, 0), StringFormat.GenericDefault);
 
                         // Op basis van de hoek 'flippen'
