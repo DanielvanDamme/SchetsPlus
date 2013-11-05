@@ -61,18 +61,11 @@ namespace SchetsEditor
         private void openBestand(string bestandsLocatie)
         {
             if (bestandsLocatie != "")
-            {
-                try
-                {
-                    XmlSerializer deserializer = new XmlSerializer(typeof(List<TekenObject>));
-                    TextReader bestandLezer = new StreamReader(bestandsLocatie);
-                    objectcontrol.Inladen = (List<TekenObject>)deserializer.Deserialize(bestandLezer);
-                    bestandLezer.Close();
-                }
-                catch(Exception e)
-                {
-                    MessageBox.Show("Fout bij het openen: " + e.Message, "Fout", MessageBoxButtons.OK);
-                }
+            { 
+                XmlSerializer deserializer = new XmlSerializer(typeof(List<TekenObject>));
+                TextReader bestandLezer = new StreamReader(bestandsLocatie);
+                objectcontrol.Inladen = (List<TekenObject>)deserializer.Deserialize(bestandLezer);
+                bestandLezer.Close();
             }
         }
 

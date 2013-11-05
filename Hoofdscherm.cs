@@ -78,7 +78,8 @@ namespace SchetsEditor
             }
         }
 
-        // 2: Methode om een bestand te openen via een OpenFileDialog
+        /* 2: Methode om een bestand te openen via een OpenFileDialog
+         * Mogelijkheid om een SchetsPlus XML te openen, vergelijkbaar met een PSD file in Photoshop */
         private void openBestandDialog(object sender, EventArgs e)
         {
             OpenFileDialog bestandOpenen = new OpenFileDialog();
