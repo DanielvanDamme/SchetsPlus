@@ -83,7 +83,7 @@ namespace SchetsEditor
     // De TweepuntTool wordt door vrijwel alle Tools gebruikt (vlak, kader, cirkel, etc.) en bevat een aantal handige functies
     public abstract class TweepuntTool : StartpuntTool
     {
-        bool wasMuisVast = false;
+        private bool wasMuisVast = false;
         // Maak een pen aan op basis van de kwast
         public static Pen MaakPen(Brush b, int dikte)
         {

@@ -65,14 +65,12 @@ namespace SchetsEditor
                 if (Path.GetExtension(bestandsLocatie) == ".xml")
                 {
                     XmlSerializer deserializer = new XmlSerializer(typeof(List<TekenObject>));
-                    TextReader textReader = new StreamReader(bestandsLocatie);
-                    objectcontrol.Inladen = (List<TekenObject>)deserializer.Deserialize(textReader);
-                    textReader.Close();
+                    TextReader bestandLezer = new StreamReader(bestandsLocatie);
+                    objectcontrol.Inladen = (List<TekenObject>)deserializer.Deserialize(bestandLezer);
+                    bestandLezer.Close();
                 }
                 else
-                {
                     bitmap = new Bitmap(bestandsLocatie);
-                }
             }
         }
 
@@ -80,9 +78,7 @@ namespace SchetsEditor
         {
             if (sz.Width > bitmap.Size.Width || sz.Height > bitmap.Size.Height)
             {
-                Bitmap nieuw = new Bitmap(Math.Max(sz.Width, bitmap.Size.Width)
-                                         , Math.Max(sz.Height, bitmap.Size.Height)
-                                         );
+                Bitmap nieuw = new Bitmap(Math.Max(sz.Width,  bitmap.Size.Width), Math.Max(sz.Height, bitmap.Size.Height));
                 Graphics gr = Graphics.FromImage(nieuw);
                 gr.FillRectangle(Brushes.White, 0, 0, sz.Width, sz.Height);
                 gr.DrawImage(bitmap, 0, 0);
@@ -91,6 +87,7 @@ namespace SchetsEditor
                 this.isBitmapGewijzigd = true;
             }
         }
+
         public void Teken(Graphics gr)
         {
             gr.DrawImage(bitmap, 0, 0);
@@ -105,6 +102,7 @@ namespace SchetsEditor
                 this.isBitmapGewijzigd = true;
             }
         }
+
         public void Schoon()
         {
             objectcontrol.Reset();
@@ -127,6 +125,7 @@ namespace SchetsEditor
         public static void Teken(Graphics gr, List<TekenObject> objects)
         {
             gr.FillRectangle(Brushes.White, 0, 0, 2560, 1440);
+            gr.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
 
             foreach (TekenObject obj in objects)
             {
@@ -140,12 +139,14 @@ namespace SchetsEditor
                         Bitmap tekstBmp = new Bitmap((int)sz.Width+1, (int)sz.Height+1);
                         Graphics gOff = Graphics.FromImage(tekstBmp);
                         gOff.DrawString(obj.Tekst, font, brush, new Point(0, 0), StringFormat.GenericDefault);
+
                         if (obj.Hoek == 90)
                             tekstBmp.RotateFlip(RotateFlipType.Rotate90FlipNone);
                         else if (obj.Hoek == 180)
                             tekstBmp.RotateFlip(RotateFlipType.Rotate180FlipNone);
                         else if (obj.Hoek == 270)
                             tekstBmp.RotateFlip(RotateFlipType.Rotate270FlipNone);
+
                         gr.DrawImage(tekstBmp, obj.Points[0]);
                         break;
                     case "kader":
