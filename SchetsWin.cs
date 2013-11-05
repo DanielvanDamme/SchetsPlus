@@ -139,6 +139,8 @@ namespace SchetsEditor
             this.maakAktieButtons(deKleuren);
             this.Resize += this.veranderAfmeting;
             this.veranderAfmeting(null, null);
+            // Teken de objecten nadat een XML bestand is ingeladen
+            Schets.Teken(Graphics.FromImage(schetscontrol.GetBitmap), schetscontrol.GetController.Ophalen);
         }
 
         // 2: overloaded constructor

@@ -16,6 +16,7 @@ namespace SchetsEditor
         // 2: Bij initialisatie van een object Schets isNieuwScherm true meegeven
         private bool isNieuwScherm = true;
         private Bitmap bitmap;
+        private ObjectControl objectcontrol = new ObjectControl();
         private static Font font = new Font("Tahoma", 40);
 
         // De eigenschap font omdat deze buiten deze klasse nodig is
@@ -23,8 +24,6 @@ namespace SchetsEditor
         {
             get { return font; }
         }
-
-        private ObjectControl objectcontrol = new ObjectControl();
 
         public ObjectControl GetController
         {
@@ -55,10 +54,8 @@ namespace SchetsEditor
         }
 
         // 2: Constructor overloading
-        public Schets()
-            : this("")
-        {
-        }
+        public Schets() : this("")
+        {}
 
         // 2: Bestand openen functie
         private void openBestand(string bestandsLocatie)

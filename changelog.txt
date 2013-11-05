@@ -1,13 +1,7 @@
-##PROBELEMEN
-
-programma opstarten > new scherm > afsluiten > dan zegt ie dat er wijzigingen zijn maar dat is niet zo. Komt omdat 
-de OnrepaintBackground() 2x wordt aangeroepen
-
-
 ##CHANGELOG
 
-Aan het begin van iedere comment in de source code staat een nummer dat aanduidt tot welke van de 5 opdrachten 
-de onderstaande toevoeging c.q. wijziging behoort.
+De toelichting geeft een korte samenvatting van wat er is veranderd aan de source code voor de betreffende 
+opdracht. Daarnaast staat aangegeven wat er per file is veranderd.
 
   OPDRACHT 1
 ################################################################################################################
@@ -41,14 +35,52 @@ de onderstaande toevoeging c.q. wijziging behoort.
 # Alle elementen die aan de schets worden toegevoegd worden opgeslagen in een List van het type TekenObject. 
 # Het gummen van een penstreep gebeurt in zijn geheel, dat geldt ook voor een tekststring. Bij het gummen wordt
 # rekening gehouden met de gebruiker door een marge van 8 pixels links en rechts van de lijnen te accepteren.
+# De formule die gebruikt is om de afstand van een punt tot een lijnstuk te berekenen is afkomstig van Wikipedia.
 ################################################################################################################
 # BESTANDSNAAM   # AANPASSING
 ################################################################################################################
-# --			 # Het gummen van een penstreep gebeurt in zijn geheel, dat geldt ook voor een tekststring.
-#                # wordt meegegeven aan nieuwe instanties van SchetsWin.FormClosing via de openBestand methode.
-# SchetsWin.cs   # Een methode toegevoegd om een bestand op te slaan. Daarnaast opslaan aan het menu toegevoegd.
-# SctsControl.cs # Constructor SchetsWin accepteert nu ook een bestandsLocatie als parameter. 2 properties
-#                # toegevoegd om de Bitmap op te vragen en of de Bitmap gewijzigd is.
-# Schets.cs      # isBitmapGewijzigd als member variabele toegevoegd om wijzigingsstatus van de bitmap bij te 
-#                # houden. 2 properties toegevoegd en constructor aangepast net als in SchetsControl.cs.
+# --			 # 
+#                # 
+# SchetsWin.cs   # 
+# SctsControl.cs # 
+#                # 
+# Schets.cs      # 
+#                # 
+################################################################################################################
+
+  OPDRACHT 4
+################################################################################################################
+# TOELICHTING
+################################################################################################################
+# Het nieuwe bestandsformaat is SchetsPlus XML. De List van TekenObjecten wordt bij het opslaan in dit formaat
+# door een XmlSerializer geserialized en weggeschreven door een StreamWriter. Het inladen gebeurt door een 
+# StreamReader en de inhoud wordt leesbaar gemaakt door de XmlDeserializer en in een nieuwe List van 
+# TekenObjecten geladen.
+################################################################################################################
+# BESTANDSNAAM   # AANPASSING
+################################################################################################################
+# --			 # 
+#                # 
+# SchetsWin.cs   # 
+# SctsControl.cs # 
+#                # 
+# Schets.cs      # 
+#                # 
+################################################################################################################
+
+  OPDRACHT 5
+################################################################################################################
+# TOELICHTING
+################################################################################################################
+# De undo knop is toegevoegd waarmee het laatste TekenObject uit de List kan worden verwijderd.
+################################################################################################################
+# BESTANDSNAAM   # AANPASSING
+################################################################################################################
+# --			 # 
+#                # 
+# SchetsWin.cs   # 
+# SctsControl.cs # 
+#                # 
+# Schets.cs      # 
+#                # 
 ################################################################################################################
