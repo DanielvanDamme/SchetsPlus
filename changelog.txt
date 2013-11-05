@@ -40,7 +40,7 @@ opdracht. Daarnaast staat aangegeven wat er per file is veranderd.
 # BESTANDSNAAM   # AANPASSING
 ################################################################################################################
 # TekenObject.cs # Nieuwe klasse om alle informatie van een getekend element in op te kunnen slaan.
-# ObjectCntrl.cs # Nieuwe klasse om de List met TekenObjecten en alle functies die deze manipulateren te bewaren.
+# ObjectCntrl.cs # Nieuwe klasse om de List met TekenObjecten en alle functies die deze manipuleren te bewaren.
 #				 # ObjectControl bevat o.a. de code voor de gum-, roteer- en undo-functies.
 # Tools.cs       # Alle klassen flink aangepast omdat een element wat men tekent nu wordt toegevoegd als  
 #                # object van het type TekenObject aan een List.
