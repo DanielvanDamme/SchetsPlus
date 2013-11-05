@@ -10,7 +10,7 @@ opdracht. Daarnaast staat aangegeven wat er per file is veranderd.
 # SchetsWin.cs   # De opdrachten new CirkelTool() & new RondjeTool() toegevoegd aan deTools array.
 # Tools.cs       # Twee nieuwe klassen CirkelTool and RondjeTool toegevoegd.
 # Resources map  # Cirkel.png and rondje.png toegevoegd.
-# Resources.resx # Twee plaatjes toegevoegd aan de Resources. cirkel.png als cirkel and rondje.png als rondje.
+# Resources.resx # Twee plaatjes toegevoegd aan de Resources. cirkel.png als cirkel en rondje.png als rondje.
 ################################################################################################################
 
 
@@ -39,14 +39,15 @@ opdracht. Daarnaast staat aangegeven wat er per file is veranderd.
 ################################################################################################################
 # BESTANDSNAAM   # AANPASSING
 ################################################################################################################
-# --			 # 
-#                # 
-# SchetsWin.cs   # 
-# SctsControl.cs # 
-#                # 
-# Schets.cs      # 
-#                # 
+# TekenObject.cs # Nieuwe klasse om alle informatie van een getekend element in op te kunnen slaan.
+# ObjectCntrl.cs # Nieuwe klasse om de List met TekenObjecten en alle functies die deze manipulateren te bewaren.
+#				 # ObjectControl bevat o.a. de code voor de gum-, roteer- en undo-functies.
+# Tools.cs       # Alle klassen flink aangepast omdat een element wat men tekent nu wordt toegevoegd als  
+#                # object van het type TekenObject aan een List.
+# Schets.cs      # Schets bevat de functie Teken() die wordt aangeroepen om alle elementen uit de een 
+#                # List<TekenObject> weer tegeven in de bitmap.
 ################################################################################################################
+
 
   OPDRACHT 4
 ################################################################################################################
@@ -59,14 +60,12 @@ opdracht. Daarnaast staat aangegeven wat er per file is veranderd.
 ################################################################################################################
 # BESTANDSNAAM   # AANPASSING
 ################################################################################################################
-# --			 # 
-#                # 
-# SchetsWin.cs   # 
-# SctsControl.cs # 
-#                # 
-# Schets.cs      # 
-#                # 
+# HoofdScherm.cs # De functie toegevoegd om een XML-bestand in te lezen.
+# SchetsWin.cs   # De functie toegevoegd om de tekening als XML-bestand op te slaan.
+# Schets.cs      # De constructor van Schets roept de functie openBestand() aan die de StreamReader en 
+#                # XmlSerializer aanroept om het bestand te openen.
 ################################################################################################################
+
 
   OPDRACHT 5
 ################################################################################################################
@@ -76,11 +75,8 @@ opdracht. Daarnaast staat aangegeven wat er per file is veranderd.
 ################################################################################################################
 # BESTANDSNAAM   # AANPASSING
 ################################################################################################################
-# --			 # 
-#                # 
-# SchetsWin.cs   # 
-# SctsControl.cs # 
-#                # 
-# Schets.cs      # 
-#                # 
+# ObjectCntrl.cs # De daadwerkelijke code van de undo-functie toegevoegd
+# SchetsWin.cs   # Undo-knop toegevoegd aan de interface
+# SctsControl.cs # Undo-functie toegevoegd
+# Schets.cs      # Undo-functie toegevoegd
 ################################################################################################################

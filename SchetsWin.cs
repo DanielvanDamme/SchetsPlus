@@ -52,7 +52,7 @@ namespace SchetsEditor
 
             // Lijst met bestandstypen inclusief SchetsPlus XML
             SaveFileDialog bestandOpslaan = new SaveFileDialog();
-            bestandOpslaan.Filter = "JPG *.jpg|*.jpg|PNG *.png|*.png|BMP *.bmp|*.bmp|SchetsPlus XML *.xml|*.xml";
+            bestandOpslaan.Filter = "SchetsPlus XML *.xml|*.xml|JPG *.jpg|*.jpg|PNG *.png|*.png|BMP *.bmp|*.bmp";
             bestandOpslaan.Title = "Afbeelding opslaan";
             if (bestandOpslaan.ShowDialog() == DialogResult.OK)
             {

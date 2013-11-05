@@ -66,7 +66,7 @@ namespace SchetsEditor
             if (bestandsLocatie != "")
             { 
                 XmlSerializer deserializer = new XmlSerializer(typeof(List<TekenObject>));
-                TextReader bestandLezer = new StreamReader(bestandsLocatie);
+                StreamReader bestandLezer = new StreamReader(bestandsLocatie);
                 objectcontrol.Inladen = (List<TekenObject>)deserializer.Deserialize(bestandLezer);
                 bestandLezer.Close();
             }
