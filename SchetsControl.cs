@@ -10,16 +10,18 @@ namespace SchetsEditor
         private Schets schets;
         private Color penkleur;
 
+        // Property om ObjectControl op te vragen
         public ObjectControl GetController
         {
             get { return schets.GetController; }
         }
 
-        // 2: Property om de tekening op te vragen (om het op te slaan)
+        // 2: Property om de tekening op te vragen
         public Bitmap GetBitmap
         {
             get { return schets.GetBitmap; }
         }
+
         // 2: Property om de wijzigingsstatus op te vragen of door te geven
         public bool IsBitmapGewijzigd
         {

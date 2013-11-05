@@ -50,6 +50,7 @@ namespace SchetsEditor
         {
             bool succes = true;
 
+            // Lijst met bestandstypen inclusief SchetsPlus XML
             SaveFileDialog bestandOpslaan = new SaveFileDialog();
             bestandOpslaan.Filter = "JPG *.jpg|*.jpg|PNG *.png|*.png|BMP *.bmp|*.bmp|SchetsPlus XML *.xml|*.xml";
             bestandOpslaan.Title = "Afbeelding opslaan";
@@ -57,6 +58,8 @@ namespace SchetsEditor
             {
                 try
                 {
+                    /* Als het bestand opgeslagen moet worden als XML zetten we onze objecten om naar XML-format, gelukkig kunnen
+                     * we hiervoor de XmlSerializer klasse gebruiken die alles voor ons doet */
                     if (Path.GetExtension(bestandOpslaan.FileName) == ".xml")
                     {
                         ObjectControl objectcontrol = schetscontrol.GetController;

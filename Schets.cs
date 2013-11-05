@@ -19,12 +19,13 @@ namespace SchetsEditor
         private ObjectControl objectcontrol = new ObjectControl();
         private static Font font = new Font("Tahoma", 40);
 
-        // De eigenschap font omdat deze buiten deze klasse nodig is
+        // Property font (deze is buiten de klasse nodig)
         public static Font Lettertype
         {
             get { return font; }
         }
 
+        // Property ObjectControl
         public ObjectControl GetController
         {
             get { return objectcontrol; }
@@ -36,7 +37,8 @@ namespace SchetsEditor
             get { return isBitmapGewijzigd; }
             set { isBitmapGewijzigd = value; }
         }
-        // 2: Property to get the drawing
+
+        // 2: Property om de bitmap op te halen
         public Bitmap GetBitmap
         {
             get { return bitmap; }
@@ -60,6 +62,7 @@ namespace SchetsEditor
         // 2: Bestand openen functie
         private void openBestand(string bestandsLocatie)
         {
+            // Als bestandslocatie niet leeg is het bestand inlezen met de TextReader en de XML data omzetten naar tekenobjecten
             if (bestandsLocatie != "")
             { 
                 XmlSerializer deserializer = new XmlSerializer(typeof(List<TekenObject>));
@@ -83,6 +86,7 @@ namespace SchetsEditor
             }
         }
 
+        // Tekenfunctie die aangeroepen wordt bij Invalidate()
         public void Teken(Graphics gr)
         {
             gr.DrawImage(bitmap, 0, 0);
@@ -98,18 +102,23 @@ namespace SchetsEditor
             }
         }
 
+        // Wist alles en roept de Teken-functie aan
         public void Schoon()
         {
             objectcontrol.Reset();
             Teken(Graphics.FromImage(bitmap), objectcontrol.Ophalen);
             this.isBitmapGewijzigd = true;
         }
+
+        // Roteert de afbeelding en roept Teken-functie aan
         public void Roteer()
         {
             objectcontrol.Roteer(bitmap.Width, bitmap.Height);
             Teken(Graphics.FromImage(bitmap), objectcontrol.Ophalen);
             this.isBitmapGewijzigd = true;
         }
+
+        // Undo
         public void Terugdraaien()
         {
             objectcontrol.Terugdraaien();
@@ -117,50 +126,55 @@ namespace SchetsEditor
             this.isBitmapGewijzigd = true;
         }
 
-        public static void Teken(Graphics gr, List<TekenObject> objects)
+        // Statische teken overload die alle objecten tekent op basis van het type object, gebruikt hiervoor Tools klasse
+        public static void Teken(Graphics gr, List<TekenObject> tekenObjecten)
         {
+            // Even alles wit maken
             gr.FillRectangle(Brushes.White, 0, 0, 2560, 1440);
             gr.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
 
-            foreach (TekenObject obj in objects)
+            foreach (TekenObject tekenObject in tekenObjecten)
             {
-                Color color = Color.FromName(obj.Kleur);
+                Color color = Color.FromName(tekenObject.Kleur);
                 SolidBrush brush = new SolidBrush(color);
 
-                switch (obj.Tool)
+                switch (tekenObject.Tool)
                 {
+                    /* Bij de tekst tool schrijven we de tekst op een bitmap, die roteren we op basis van de meegekregen hoek en vervolgens
+                     * voegen we die toe aan de volledige afbeelding */
                     case "tekst":
-                        SizeF sz = gr.MeasureString(obj.Tekst, font);
+                        SizeF sz = gr.MeasureString(tekenObject.Tekst, font);
                         Bitmap tekstBmp = new Bitmap((int)sz.Width+1, (int)sz.Height+1);
                         Graphics gOff = Graphics.FromImage(tekstBmp);
-                        gOff.DrawString(obj.Tekst, font, brush, new Point(0, 0), StringFormat.GenericDefault);
+                        gOff.DrawString(tekenObject.Tekst, font, brush, new Point(0, 0), StringFormat.GenericDefault);
 
-                        if (obj.Hoek == 90)
+                        // Op basis van de hoek 'flippen'
+                        if (tekenObject.Hoek == 90)
                             tekstBmp.RotateFlip(RotateFlipType.Rotate90FlipNone);
-                        else if (obj.Hoek == 180)
+                        else if (tekenObject.Hoek == 180)
                             tekstBmp.RotateFlip(RotateFlipType.Rotate180FlipNone);
-                        else if (obj.Hoek == 270)
+                        else if (tekenObject.Hoek == 270)
                             tekstBmp.RotateFlip(RotateFlipType.Rotate270FlipNone);
 
-                        gr.DrawImage(tekstBmp, obj.Points[0]);
+                        gr.DrawImage(tekstBmp, tekenObject.Points[0]);
                         break;
                     case "kader":
-                        new RechthoekTool().Teken(gr, obj.Points[0], obj.Points[1], brush);
+                        new RechthoekTool().Teken(gr, tekenObject.Points[0], tekenObject.Points[1], brush);
                         break;
                     case "vlak":
-                        new VolRechthoekTool().Teken(gr, obj.Points[0], obj.Points[1], brush);
+                        new VolRechthoekTool().Teken(gr, tekenObject.Points[0], tekenObject.Points[1], brush);
                         break;
                     case "cirkel":
-                        new CirkelTool().Teken(gr, obj.Points[0], obj.Points[1], brush);
+                        new CirkelTool().Teken(gr, tekenObject.Points[0], tekenObject.Points[1], brush);
                         break;
                     case "rondje":
-                        new RondjeTool().Teken(gr, obj.Points[0], obj.Points[1], brush);
+                        new RondjeTool().Teken(gr, tekenObject.Points[0], tekenObject.Points[1], brush);
                         break;
                     case "lijn":
-                        new LijnTool().Teken(gr, obj.Points[0], obj.Points[1], brush);
+                        new LijnTool().Teken(gr, tekenObject.Points[0], tekenObject.Points[1], brush);
                         break;
                     case "pen":
-                        new PenTool().TekenLijn(gr, obj.Points, brush);
+                        new PenTool().TekenLijn(gr, tekenObject.Points, brush);
                         break;
                 }
             }
