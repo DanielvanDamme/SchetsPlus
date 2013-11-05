@@ -83,6 +83,7 @@ namespace SchetsEditor
     // De TweepuntTool wordt door vrijwel alle Tools gebruikt (vlak, kader, cirkel, etc.) en bevat een aantal handige functies
     public abstract class TweepuntTool : StartpuntTool
     {
+        bool wasMuisVast = false;
         // Maak een pen aan op basis van de kwast
         public static Pen MaakPen(Brush b, int dikte)
         {
@@ -104,6 +105,7 @@ namespace SchetsEditor
         public override void MuisVast(SchetsControl s, Point p)
         {
             base.MuisVast(s, p);
+            wasMuisVast = true;
             tekenObject.Tool = ToString();
         }
 
@@ -117,9 +119,13 @@ namespace SchetsEditor
         // Bij loslaten muis het laatste punt toevoegen aan het TekenObject (deze is hiermee afgerond) en de tekening updaten
         public override void MuisLos(SchetsControl s, Point p)
         {
-            tekenObject.Points.Add(p);
-            s.Invalidate();
-            Schets.Teken(s.MaakBitmapGraphics(), objectcontrol.Ophalen);
+            if (wasMuisVast)
+            {
+                tekenObject.Points.Add(p);
+                s.Invalidate();
+                Schets.Teken(s.MaakBitmapGraphics(), objectcontrol.Ophalen);
+                wasMuisVast = false;
+            }
         }
 
         public abstract void Teken(Graphics g, Point p1, Point p2);
