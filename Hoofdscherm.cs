@@ -18,7 +18,9 @@ namespace SchetsEditor
             this.Text = "Schets editor";
             this.IsMdiContainer = true;
             this.MainMenuStrip = menuStrip;
+            this.Icon = new Icon("palet.ico");
         }
+
         private void maakFileMenu()
         {   ToolStripDropDownItem menu;
             menu = new ToolStripMenuItem("File");
@@ -93,6 +95,20 @@ namespace SchetsEditor
                 catch (Exception ex)
                 {   MessageBox.Show("Fout bij het openen: " + ex.Message, "Fout", MessageBoxButtons.OK, MessageBoxIcon.Error);    }
             }
+        }
+
+        private void InitializeComponent()
+        {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Hoofdscherm));
+            this.SuspendLayout();
+            // 
+            // Hoofdscherm
+            // 
+            this.ClientSize = new System.Drawing.Size(284, 261);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.Name = "Hoofdscherm";
+            this.ResumeLayout(false);
+
         }
     }
 }

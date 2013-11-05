@@ -134,6 +134,7 @@ namespace SchetsEditor
 
             menuStrip = new MenuStrip();
             menuStrip.Visible = false;
+            this.Icon = new Icon("palet.ico");
             this.Controls.Add(menuStrip);
             this.maakFileMenu();
             this.maakToolMenu(deTools);
