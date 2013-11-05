@@ -62,15 +62,17 @@ namespace SchetsEditor
         {
             if (bestandsLocatie != "")
             {
-                if (Path.GetExtension(bestandsLocatie) == ".xml")
+                try
                 {
                     XmlSerializer deserializer = new XmlSerializer(typeof(List<TekenObject>));
                     TextReader bestandLezer = new StreamReader(bestandsLocatie);
                     objectcontrol.Inladen = (List<TekenObject>)deserializer.Deserialize(bestandLezer);
                     bestandLezer.Close();
                 }
-                else
-                    bitmap = new Bitmap(bestandsLocatie);
+                catch(Exception e)
+                {
+                    MessageBox.Show("Fout bij het openen: " + e.Message, "Fout", MessageBoxButtons.OK);
+                }
             }
         }
 

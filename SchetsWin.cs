@@ -51,7 +51,7 @@ namespace SchetsEditor
             bool succes = true;
 
             SaveFileDialog bestandOpslaan = new SaveFileDialog();
-            bestandOpslaan.Filter = "JPG file *.jpg|*.jpg|PNG file *.png|*.png|BMP file *.bmp|*.bmp|SchetsPlus XML file *.xml|*.xml";
+            bestandOpslaan.Filter = "JPG *.jpg|*.jpg|PNG *.png|*.png|BMP *.bmp|*.bmp|SchetsPlus XML *.xml|*.xml";
             bestandOpslaan.Title = "Afbeelding opslaan";
             if (bestandOpslaan.ShowDialog() == DialogResult.OK)
             {

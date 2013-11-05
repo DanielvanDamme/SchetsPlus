@@ -82,8 +82,8 @@ namespace SchetsEditor
         private void openBestandDialog(object sender, EventArgs e)
         {
             OpenFileDialog bestandOpenen = new OpenFileDialog();
-            bestandOpenen.Filter = "JPG file *.jpg|*.jpg|PNG file *.png|*.png|BMP file *.bmp|*.bmp|SchetsPlus XML file *.xml|*.xml";
-            bestandOpenen.Title = "Afbeelding openen";
+            bestandOpenen.Filter = "SchetsPlus XML *.xml|*.xml";
+            bestandOpenen.Title = "Bestand openen";
 
             if (bestandOpenen.ShowDialog() == DialogResult.OK)
             {
