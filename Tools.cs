@@ -117,7 +117,7 @@ namespace SchetsEditor
         // Bij loslaten muis het laatste punt toevoegen aan het TekenObject (deze is hiermee afgerond) en de tekening updaten
         public override void MuisLos(SchetsControl s, Point p)
         {
-            tekenObject.Points.Add(p);            
+            tekenObject.Points.Add(p);
             s.Invalidate();
             Schets.Teken(s.MaakBitmapGraphics(), objectcontrol.Ophalen);
         }

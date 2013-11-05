@@ -124,10 +124,9 @@ namespace SchetsEditor
             this.isBitmapGewijzigd = true;
         }
 
-
         public static void Teken(Graphics gr, List<TekenObject> objects)
         {
-            gr.FillRectangle(Brushes.White, 0, 0, 1000, 1000);
+            gr.FillRectangle(Brushes.White, 0, 0, 2560, 1440);
 
             foreach (TekenObject obj in objects)
             {
